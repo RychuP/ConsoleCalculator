@@ -356,6 +356,7 @@ namespace Calculator
         Regex validCharacters = new Regex(@"^[a-zA-Z0-9_()*\/\+-.]+$");
         Regex digitsOnly = new Regex("^[0-9]+$");
         string input;
+        char currentChar;
         int currentIndex = 0;
         // difference between the index in this instance and the original
         int indexAdjustement = 0;
@@ -377,17 +378,6 @@ namespace Calculator
 
 
         // Properties
-        char CurrentChar { get; set; }
-
-        public bool ContainsOperators
-        {
-            get
-            {
-                if (input.IndexOfAny(Operator.SupportedTypes) != -1) return true;
-                else return false;
-            }
-        }
-
         public bool ContainsOnlyValidChars
         {
             get
@@ -401,15 +391,6 @@ namespace Calculator
             get
             {
                 if (input.Length == 0) return true;
-                else return false;
-            }
-        }
-
-        public bool IsFinished
-        {
-            get
-            {
-                if (currentIndex == input.Length) return true;
                 else return false;
             }
         }
@@ -432,22 +413,22 @@ namespace Calculator
 
             while (currentIndex < input.Length)
             {
-                // I. when there is no open brackets
+                // when there is no open brackets
                 if (openBracketCount == 0)
                 {
-                    if (Char.IsDigit(CurrentChar))
+                    if (Char.IsDigit(currentChar))
                     {
-                        output.Add(CurrentChar);
+                        output.Add(currentChar);
                     }
                     
                     else if (!assemblingDecimal)
                     {
-                        if (CurrentChar == '.')
+                        if (currentChar == '.')
                         {
                             if (output.IsDigitsOnly)
                             {
                                 assemblingDecimal = true;
-                                output.Add(CurrentChar);
+                                output.Add(currentChar);
                             }
                             else 
                             {
@@ -455,13 +436,13 @@ namespace Calculator
                             }
                         }
                         
-                        else if (CurrentChar == '(')
+                        else if (currentChar == '(')
                         {
                             // string begins with the open bracket
                             if (output.IsEmpty)
                             {
                                 openBracketCount++;
-                                output.Add(CurrentChar);
+                                output.Add(currentChar);
                             }
                             // not expecting an open bracket
                             else
@@ -471,7 +452,7 @@ namespace Calculator
                         }
     
                         // 3. case: closing bracket
-                        else if (CurrentChar == ')')
+                        else if (currentChar == ')')
                         {
                             // not expecting a closing bracket
                             if (output.IsEmpty)
@@ -481,11 +462,11 @@ namespace Calculator
                         }
     
                         // 4. case: operator
-                        else if (Operator.IsSupported(CurrentChar))
+                        else if (Operator.IsSupported(currentChar))
                         {
                             if (output.IsEmpty)
                             {
-                                var op = new Operator(CurrentChar);
+                                var op = new Operator(currentChar);
                                 IncrementIndex();
                                 return op;
                             }
@@ -499,63 +480,58 @@ namespace Calculator
                         // 5. case: some other unsupported char
                         else
                         {
-                            return new Error(currentIndex + indexAdjustement);
+                            return GetError();
                         }
                     }
                     else
                     {
-                        return GetError();
+                        // only operator or end of input can terminate decimal assembly
+                        if (Operator.IsSupported(currentChar))
+                        {
+                            return new Constant(output.ToDouble());
+                        }
+                        else
+                        {
+                            return GetError();
+                        }
                     }
                 }
 
-                // II. when there are open brackets
+                // when there are open brackets
                 else
                 {
-                    // 1. case: digit
-                    if (Char.IsDigit(CurrentChar))
-                    {
-                        output.Add(CurrentChar);
-                    }
-
-                    // 2. case: open bracket
-                    else if (CurrentChar == '(')
+                    if (currentChar == '(')
                     {
                         openBracketCount++;
-                        output.Add(CurrentChar);
+                        output.Add(currentChar);
                     }
 
-                    // 3. case: closing bracket
-                    else if (CurrentChar == ')')
+                    else if (currentChar == ')')
                     {
                         openBracketCount--;
-                        output.Add(CurrentChar);
+                        output.Add(currentChar);
                         // closing brackets match
                         if (openBracketCount == 0)
                         {
                             IncrementIndex();
                             output.TrimBrackets();
                             output.Reset();
+                            // this is why we are using if and not switch here
                             break;
                         }
                     }
 
-                    // 4. case: operator
-                    else if (Operator.IsSupported(CurrentChar))
-                    {
-                        output.Add(CurrentChar);
-                    }
-
-                    // 5. case: some other unsupported char
+                    // anything else just add in and let the next expression worry about it
                     else
                     {
-                        return new Error(currentIndex + indexAdjustement);
+                        output.Add(currentChar);
                     }
                 }
 
                 IncrementIndex();
             }
 
-            // finalize
+            // case: end of input -> finalize
             if (!output.IsEmpty)
             {
                 if (output.IsDigitsOnly || assemblingDecimal)
@@ -583,7 +559,7 @@ namespace Calculator
         {
             if (input.Length > ++currentIndex)
             {
-                CurrentChar = input[currentIndex];
+                currentChar = input[currentIndex];
             }
         }
 
@@ -618,11 +594,11 @@ namespace Calculator
 
         void Reset()
         {
-            CurrentChar = new char();
+            currentChar = new char();
             if (input.Length > 0)
             {
                 // remove all white spaces
-                CurrentChar = input[0];
+                currentChar = input[0];
             }
         }
     }
