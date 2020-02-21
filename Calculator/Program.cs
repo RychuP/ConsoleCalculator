@@ -428,64 +428,83 @@ namespace Calculator
         {
             UserInput output = StartOutput();
             int openBracketCount = 0;
+            bool assemblingDecimal = false;
 
             while (currentIndex < input.Length)
             {
                 // I. when there is no open brackets
                 if (openBracketCount == 0)
                 {
-                    // 1. case: digit
                     if (Char.IsDigit(CurrentChar))
                     {
                         output.Add(CurrentChar);
                     }
-
-                    // 2. case: open bracket
-                    else if (CurrentChar == '(')
+                    
+                    else if (!assemblingDecimal)
                     {
-                        // string begins with the open bracket
-                        if (output.IsEmpty)
+                        if (CurrentChar == '.')
                         {
-                            openBracketCount++;
-                            output.Add(CurrentChar);
+                            if (output.IsDigitsOnly)
+                            {
+                                assemblingDecimal = true;
+                                output.Add(CurrentChar);
+                            }
+                            else 
+                            {
+                                return GetError();
+                            }
                         }
-                        // not expecting an open bracket
+                        
+                        else if (CurrentChar == '(')
+                        {
+                            // string begins with the open bracket
+                            if (output.IsEmpty)
+                            {
+                                openBracketCount++;
+                                output.Add(CurrentChar);
+                            }
+                            // not expecting an open bracket
+                            else
+                            {
+                                return GetError();
+                            }
+                        }
+    
+                        // 3. case: closing bracket
+                        else if (CurrentChar == ')')
+                        {
+                            // not expecting a closing bracket
+                            if (output.IsEmpty)
+                            {
+                                return GetError();
+                            }
+                        }
+    
+                        // 4. case: operator
+                        else if (Operator.IsSupported(CurrentChar))
+                        {
+                            if (output.IsEmpty)
+                            {
+                                var op = new Operator(CurrentChar);
+                                IncrementIndex();
+                                return op;
+                            }
+                            // operator marks end of this operand
+                            else
+                            {
+                                break;
+                            }
+                        }
+    
+                        // 5. case: some other unsupported char
                         else
                         {
                             return new Error(currentIndex + indexAdjustement);
                         }
                     }
-
-                    // 3. case: closing bracket
-                    else if (CurrentChar == ')')
-                    {
-                        // not expecting a closing bracket
-                        if (output.IsEmpty)
-                        {
-                            return new Error(currentIndex + indexAdjustement);
-                        }
-                    }
-
-                    // 4. case: operator
-                    else if (Operator.IsSupported(CurrentChar))
-                    {
-                        if (output.IsEmpty)
-                        {
-                            var op = new Operator(CurrentChar);
-                            IncrementIndex();
-                            return op;
-                        }
-                        // operator marks end of this operand
-                        else
-                        {
-                            break;
-                        }
-                    }
-
-                    // 5. case: some other unsupported char
                     else
                     {
-                        return new Error(currentIndex + indexAdjustement);
+                        return GetError();
                     }
                 }
 
@@ -539,17 +558,20 @@ namespace Calculator
             // finalize
             if (!output.IsEmpty)
             {
-                if (output.IsDigitsOnly)
+                if (output.IsDigitsOnly || assemblingDecimal)
                 {
                     return new Constant(output.ToDouble());
                 }
 
-                if (openBracketCount == 0)
+                else if (openBracketCount == 0)
                 {
                     return new Expression(output);
                 }
 
-                return new Error(currentIndex + indexAdjustement);
+                else 
+                {
+                    return GetError();
+                }
             }
             else
             {
