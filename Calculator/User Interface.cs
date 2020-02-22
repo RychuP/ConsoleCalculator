@@ -6,7 +6,7 @@ namespace Calculator
     abstract class WindowSection
     {
         string header;
-        const int HEADER_LENGTH = 30;
+        const int HEADER_LENGTH = 100;
 
         public WindowSection(string header)
         {
@@ -50,7 +50,7 @@ namespace Calculator
         public void Print()
         {
             PrintHeader();
-            Console.WriteLine(Result);
+            Console.WriteLine(Result + "\n\n");
         }
     }
 
@@ -61,27 +61,19 @@ namespace Calculator
 
         public Input() : base("Input")
         {
-
+            Exit = false;
         }
 
-        public bool Exit
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool Exit { get; private set; }
 
         public void Print()
         {
-            Operation operation;
-            ConsoleKeyInfo key;
-
             Console.Clear();
             output.Print();
             library.Print();
             PrintHeader();
 
+            Console.Write("[{0}]> ", library.CurrentVariable.Name);
             String userInput = Console.ReadLine();
             Evaluate(userInput);
         }
@@ -94,10 +86,16 @@ namespace Calculator
                 {
                     case "help":
                         output.Result =
-                            "- calculator accepts brackets, decimals, single letter variables and four basic operators + - * /\n" +
+                            "- calculator accepts brackets, decimals, single letter variables and four basic operators '+ - * /'\n" +
                             "- type a letter and press enter to introduce a new or switch to an existing variable\n" +
+                            "- type '#' followed by text to put a comment on top of the current variable\n" +
                             "- type 'del' to delete current variable or type 'del' followed by a lettter to delete another variable\n" +
+                            "- type 'exit' to exit from the application\n" +
                             "- type 'help' to read this section again";
+                        break;
+
+                    case "exit":
+                        Exit = true;
                         break;
 
                     default:
@@ -159,6 +157,7 @@ namespace Calculator
             {
                 v.Print();
             }
+            Console.WriteLine();
         }
 
         public void SetCurrentVariable(char name)
