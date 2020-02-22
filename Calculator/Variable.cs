@@ -46,7 +46,7 @@ namespace Calculator
             {
                 Console.WriteLine("# " + Comment);
             }
-            Console.WriteLine("{0} = {1}\t\t({2})\n\n", name, Value, LastOperation);
+            Console.WriteLine("{0} = {1}\t\t({2})\n", name, Value, LastOperation);
         }
     }
 }
