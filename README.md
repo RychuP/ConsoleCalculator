@@ -2,7 +2,7 @@
 
 My first windows app that I use to learn C#, visual studio and what GitHub is all about. 
 
-Coming over from javascript, php and other web development languages written in notepad++, got to say the above three are all very impressive.
+Coming over from javascript, php and other web development languages written in notepad++, got to say: the above three are all very impressive.
 
 Anyway, some details about this calculator:
 - console app
