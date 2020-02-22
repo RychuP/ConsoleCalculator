@@ -7,8 +7,8 @@ Coming over from javascript, php and other web development languages written in 
 Anyway, some details about this calculator:
 - console app
 - supports brackets and all basic operators
-- supports single letter variables that can be used in calculations
-- variables can be described with a comment as a reminder what they hold
+- supports single letter variables that can be used in calculations (work in progress)
+- variables can be described with a comment as a reminder what they hold (work in progress)
 - type 'help' to show all the available commands
 
-Work in progress.
+More to come.
