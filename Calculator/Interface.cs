@@ -99,7 +99,7 @@ namespace Calculator
                         break;
 
                     case "del":
-                        library.RemoveVar();
+                        output.Result = library.RemoveVar();
                         break;
 
                     default:
@@ -184,12 +184,25 @@ namespace Calculator
             }
         }
 
-        public void RemoveVar(Variable v = null)
+        public string RemoveVar(Variable v = null)
         {
-            if (v == null && CurrentVariable.IsRemovable)
+            if (v == null)
             {
-                variables.Remove(CurrentVariable);
-                CurrentVariable = variables[0];
+                if (CurrentVariable.IsRemovable)
+                {
+                    variables.Remove(CurrentVariable);
+                    string msg = $"Variable '{CurrentVariable.Name}' has been removed.";
+                    CurrentVariable = variables[0];
+                    return msg;
+                }
+                else
+                {
+                    return $"Variable '{CurrentVariable.Name}' couldn't be removed.";
+                }
+            }
+            else
+            {
+                return "To be done...";
             }
         }
     }
