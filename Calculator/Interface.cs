@@ -98,20 +98,33 @@ namespace Calculator
                         Exit = true;
                         break;
 
+                    case "del":
+                        library.RemoveVar();
+                        break;
+
                     default:
-                        var parser = new UserInput(userInput);
-                        if (parser.ContainsOnlyValidChars)
+                        // new var or change var
+                        if (userInput.Length == 1 && Char.IsLetter(userInput[0]))
                         {
-                            var expression = new Expression(parser);
-                            if (expression != null && expression.Error == null)
+                            library.SetCurrentVariable(userInput[0]);
+                        }
+                        // calculations 
+                        else
+                        {
+                            var parser = new UserInput(userInput);
+                            if (parser.ContainsOnlyValidChars)
                             {
-                                library.CurrentVariable.Value = expression.Value;
-                                library.CurrentVariable.LastOperation = userInput;
-                                output.Result = expression.Value.ToString();
-                            }
-                            else
-                            {
-                                output.Result = "This operation couldn't compute. Please check your input.";
+                                var expression = new Expression(parser);
+                                if (expression != null && expression.Error == null)
+                                {
+                                    library.CurrentVariable.Value = expression.Value;
+                                    library.CurrentVariable.LastOperation = userInput;
+                                    output.Result = $"{expression.Value}";
+                                }
+                                else
+                                {
+                                    output.Result = "This operation couldn't compute. Please check your input.";
+                                }
                             }
                         }
                         break;
@@ -126,7 +139,6 @@ namespace Calculator
     {
         /* -------------- Fields -------------- */
         List<Variable> variables = new List<Variable>();
-        int currentVariableIndex = 0;
 
 
         /* ------------ Constructor ----------- */
@@ -137,16 +149,12 @@ namespace Calculator
 
             variables.Add(new Variable('y'));
             variables[1].Comment = "Example, removable variable for intermediary calculations.";
+
+            CurrentVariable = variables[0];
         }
 
         /* ------------ Properties ------------ */
-        public Variable CurrentVariable
-        {
-            get
-            {
-                return variables[currentVariableIndex];
-            }
-        }
+        public Variable CurrentVariable { get; private set; }
 
 
         /* ------------- Methods -------------- */
@@ -162,7 +170,27 @@ namespace Calculator
 
         public void SetCurrentVariable(char name)
         {
-            
+            Variable existingVar = variables.Find(v => v.Name == name);
+            if (existingVar != null)
+            {
+                CurrentVariable = existingVar;
+            }
+            // create new var
+            else
+            {
+                Variable newVar = new Variable(name);
+                variables.Add(newVar);
+                CurrentVariable = newVar;
+            }
+        }
+
+        public void RemoveVar(Variable v = null)
+        {
+            if (v == null && CurrentVariable.IsRemovable)
+            {
+                variables.Remove(CurrentVariable);
+                CurrentVariable = variables[0];
+            }
         }
     }
 }
