@@ -74,15 +74,15 @@ namespace Calculator
             PrintHeader();
 
             Console.Write("[{0}]> ", library.CurrentVariable.Name);
-            String userInput = Console.ReadLine();
-            Evaluate(userInput);
+            String Parser = Console.ReadLine();
+            Evaluate(Parser);
         }
 
-        public void Evaluate(string userInput)
+        public void Evaluate(string inputTxt)
         {
-            if (userInput.Length > 0)
+            if (inputTxt.Length > 0)
             {
-                switch (userInput)
+                switch (inputTxt)
                 {
                     case "help":
                         output.Result =
@@ -103,27 +103,59 @@ namespace Calculator
                         break;
 
                     default:
-                        // new var or change var
-                        if (userInput.Length == 1 && Char.IsLetter(userInput[0]))
+                        if (inputTxt.Length == 1)
                         {
-                            library.SetCurrentVariable(userInput[0]);
+                            if (Char.IsLetter(inputTxt[0]))
+                            {
+                                library.SetCurrentVariable(inputTxt[0]);
+                            }
+                            else if (inputTxt[0] == '#')
+                            {
+                                library.CurrentVariable.Comment = "";
+                            }
                         }
                         // calculations 
                         else
                         {
-                            var parser = new UserInput(userInput);
-                            if (parser.ContainsOnlyValidChars)
+                            // comment
+                            if (inputTxt[0] == '#')
                             {
-                                var expression = new Expression(parser);
-                                if (expression != null && expression.Error == null)
+                                inputTxt = inputTxt.Substring(1);
+                                inputTxt = inputTxt.Trim();
+                                library.CurrentVariable.Comment = inputTxt;
+                            }
+                            // deletion
+                            else if (inputTxt.StartsWith("del"))
+                            {
+                                // skip 'del'
+                                inputTxt = inputTxt.Substring(3);
+                                inputTxt = inputTxt.Trim();
+                                if (inputTxt.Length == 1 && Char.IsLetter(inputTxt[0]))
                                 {
-                                    library.CurrentVariable.Value = expression.Value;
-                                    library.CurrentVariable.LastOperation = userInput;
-                                    output.Result = $"{expression.Value}";
+                                    output.Result = library.RemoveVar(inputTxt[0]);
                                 }
                                 else
                                 {
-                                    output.Result = "This operation couldn't compute. Please check your input.";
+                                    output.Result = $"Couldn't delete '{inputTxt}'.";
+                                }
+                            }
+                            // computation
+                            else
+                            {
+                                var parser = new Parser(inputTxt);
+                                if (parser.ContainsOnlyValidChars)
+                                {
+                                    var expression = new Expression(parser);
+                                    if (expression != null && expression.Error == null)
+                                    {
+                                        library.CurrentVariable.Value = expression.Value;
+                                        library.CurrentVariable.LastOperation = inputTxt;
+                                        output.Result = $"{expression.Value}";
+                                    }
+                                    else
+                                    {
+                                        output.Result = "This operation couldn't compute. Please check your input.";
+                                    }
                                 }
                             }
                         }
@@ -184,9 +216,9 @@ namespace Calculator
             }
         }
 
-        public string RemoveVar(Variable v = null)
+        public string RemoveVar(char? name = null)
         {
-            if (v == null)
+            if (!name.HasValue)
             {
                 if (CurrentVariable.IsRemovable)
                 {
@@ -202,7 +234,27 @@ namespace Calculator
             }
             else
             {
-                return "To be done...";
+                Variable variable = variables.Find(x => x.Name == name.Value);
+                if (variable != null)
+                {
+                    if (variable.IsRemovable)
+                    {
+                        variables.Remove(variable);
+                        if (CurrentVariable == variable)
+                        {
+                            CurrentVariable = variables[0];
+                        }
+                        return $"Variable '{variable}' has been removed.";
+                    }
+                    else
+                    {
+                        return $"Variable '{CurrentVariable.Name}' couldn't be removed.";
+                    }
+                }
+                else
+                {
+                    return $"Couldn't remove variable {name.Value}. It has not been created.";
+                }
             }
         }
     }

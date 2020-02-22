@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Calculator
 {
-    class UserInput
+    class Parser
     {
         // Fields
         Regex validCharacters = new Regex(@"^[a-zA-Z0-9_()*\/\+-.]+$");
@@ -16,14 +16,14 @@ namespace Calculator
 
 
         // Constructors
-        public UserInput(string input = "")
+        public Parser(string input = "")
         {
             input = input.Replace(" ", "");
             this.input = input;
             Reset();
         }
 
-        public UserInput(int indexAdjustement)
+        public Parser(int indexAdjustement)
         {
             input = "";
             this.indexAdjustement = indexAdjustement;
@@ -60,7 +60,7 @@ namespace Calculator
         // Methods
         public Object GetNextPart()
         {
-            UserInput output = StartOutput();
+            Parser output = StartOutput();
             int openBracketCount = 0;
             bool assemblingDecimal = false;
 
@@ -231,9 +231,9 @@ namespace Calculator
             return Convert.ToDouble(input);
         }
 
-        public UserInput StartOutput()
+        public Parser StartOutput()
         {
-            return new UserInput(currentIndex + indexAdjustement);
+            return new Parser(currentIndex + indexAdjustement);
         }
 
         void TrimBrackets()

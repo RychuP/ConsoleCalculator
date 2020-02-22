@@ -15,6 +15,7 @@ namespace Calculator
         {
             this.name = name;
             this.removable = removable;
+            Comment = "";
             Value = 0;
         }
 
@@ -42,7 +43,7 @@ namespace Calculator
         /* ------------- Methods -------------- */
         public void Print()
         {
-            if (Comment != null)
+            if (Comment.Length > 0)
             {
                 Console.WriteLine("# " + Comment);
             }

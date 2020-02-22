@@ -75,7 +75,7 @@ namespace Calculator
         Operand lastOperand;
 
         // Constructor
-        public Expression(UserInput input) : base()
+        public Expression(Parser input) : base()
         {
             Object expressionPart = input.GetNextPart();
             while (expressionPart != null)
