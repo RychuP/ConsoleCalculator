@@ -48,7 +48,7 @@ namespace Calculator
             }
         }
 
-        public bool IsDigitsOnly
+        bool IsDigitsOnly
         {
             get
             {

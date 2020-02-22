@@ -6,22 +6,12 @@ namespace Calculator
     {
         static void Main(string[] args)
         {
-            String userInput;
-            Operation operation;
-            ConsoleKeyInfo key;
+            Input input = new Input();
 
-            do
+            while (!input.Exit)
             {
-                Console.Clear();
-                Console.WriteLine("Enter calculation to compute:");
-                userInput = Console.ReadLine();
-                operation = new Operation(userInput);
-                Console.WriteLine("= " + operation.Result);
-                Console.WriteLine();
-                Console.Write("Another operation? Y/N ");
-                key = Console.ReadKey();
+                input.Print();
             }
-            while (key.KeyChar == 'y');
         }
     }
 
