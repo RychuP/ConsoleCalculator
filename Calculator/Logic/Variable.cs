@@ -45,7 +45,9 @@ namespace Calculator
         {
             if (Comment.Length > 0)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("# " + Comment);
+                Console.ResetColor();
             }
             Console.WriteLine("{0} = {1} ({2})\n", name, Value, LastOperation);
         }

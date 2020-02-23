@@ -244,14 +244,14 @@ namespace Calculator
             input += x;
         }
 
-        double ToDouble()
-        {
-            return Convert.ToDouble(input);
-        }
-
         public Parser StartOutput()
         {
             return new Parser(currentIndex + indexAdjustement, library);
+        }
+
+        double ToDouble()
+        {
+            return Convert.ToDouble(input);
         }
 
         void TrimBrackets()
@@ -272,15 +272,5 @@ namespace Calculator
                 currentChar = input[0];
             }
         }
-    }
-
-    class Error
-    {
-        public Error(int problemIndex)
-        {
-            Index = problemIndex;
-        }
-
-        public int Index { get; set; }
     }
 }

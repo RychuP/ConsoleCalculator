@@ -1,4 +1,4 @@
-# Calculator v0.3
+# Calculator v0.4
 
 My first windows app that I write to learn C#, visual studio and what GitHub is all about. 
 
