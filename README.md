@@ -11,10 +11,11 @@ Anyway, some details about this calculator:
 - variables can be described with comments as a reminder of what they hold
 - type 'help' to show all the available commands
 
-## Sample Output (Screenshot)
-
-![screenshot](/Screenshot.png)
-
 The MIT License (MIT)
 
 Copyright (c) 2020 Ryszard Pyka
+
+
+## Sample Output (Screenshot)
+
+![screenshot](/screenshot.png)
