@@ -13,19 +13,22 @@ namespace Calculator
         int currentIndex = 0;
         // difference between the index in this instance and the original
         int indexAdjustement = 0;
+        Library library;
 
 
         // Constructors
-        public Parser(string input = "")
+        public Parser(string input, Library library)
         {
             input = input.Replace(" ", "");
+            this.library = library;
             this.input = input;
             Reset();
         }
 
-        public Parser(int indexAdjustement)
+        public Parser(int indexAdjustement, Library library)
         {
             input = "";
+            this.library = library;
             this.indexAdjustement = indexAdjustement;
         }
 
@@ -123,14 +126,29 @@ namespace Calculator
                                 IncrementIndex();
                                 return op;
                             }
+
                             // operator marks end of this operand
+                            else break;
+                        }
+
+                        // 5. case: variable
+                        else if (Char.IsLetter(currentChar))
+                        {
+                            Variable variable = library.Find(currentChar);
+                            if (output.IsEmpty &&
+                                variable != null &&
+                                (currentIndex + 1 == input.Length || !Char.IsLetter(input[currentIndex + 1])))
+                            {
+                                IncrementIndex();
+                                return new Constant(variable.Value);
+                            }
                             else
                             {
-                                break;
+                                return GetError();
                             }
                         }
 
-                        // 5. case: some other unsupported char
+                        // 6. case: some other unsupported char
                         else
                         {
                             return GetError();
@@ -233,7 +251,7 @@ namespace Calculator
 
         public Parser StartOutput()
         {
-            return new Parser(currentIndex + indexAdjustement);
+            return new Parser(currentIndex + indexAdjustement, library);
         }
 
         void TrimBrackets()

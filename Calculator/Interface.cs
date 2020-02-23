@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Calculator
 {
@@ -42,7 +43,7 @@ namespace Calculator
     {
         public Output() : base("Output")
         {
-            Result = "Rychu's Calculator v0.2. Type 'help' for available commands.";
+            Result = "Rychu's Calculator v0.3. Type 'help' for available commands.";
         }
 
         public string Result { get; set; }
@@ -58,6 +59,7 @@ namespace Calculator
     {
         Output output = new Output();
         Library library = new Library();
+        Regex asciiLettersOnly = new Regex(@"^[a-zA-Z]+$");
 
         public Input() : base("Input")
         {
@@ -74,8 +76,8 @@ namespace Calculator
             PrintHeader();
 
             Console.Write("[{0}]> ", library.CurrentVariable.Name);
-            String Parser = Console.ReadLine();
-            Evaluate(Parser);
+            String inputTxt = Console.ReadLine();
+            Evaluate(inputTxt);
         }
 
         public void Evaluate(string inputTxt)
@@ -88,10 +90,10 @@ namespace Calculator
                         output.Result =
                             "- calculator accepts brackets, decimals, single letter variables and four basic operators '+ - * /'\n" +
                             "- type a letter and press enter to introduce a new or switch to an existing variable\n" +
-                            "- type '#' followed by text to put a comment on top of the current variable\n" +
-                            "- type 'del' to delete current variable or type 'del' followed by a lettter to delete another variable\n" +
-                            "- type 'exit' to exit from the application\n" +
-                            "- type 'help' to read this section again";
+                            "- type '#' followed by text to comment current variable or just '#' to remove existing comment\n" +
+                            "- type 'del' to delete current variable or 'del' followed by a lettter to delete another variable\n" +
+                            "- type 'exit' to leave the application\n" +
+                            "- type 'help' to read these instructions again";
                         break;
 
                     case "exit":
@@ -103,9 +105,9 @@ namespace Calculator
                         break;
 
                     default:
-                        if (inputTxt.Length == 1)
+                        if (inputTxt.Length == 1 && !Char.IsDigit(inputTxt[0]))
                         {
-                            if (Char.IsLetter(inputTxt[0]))
+                            if (asciiLettersOnly.IsMatch(inputTxt))
                             {
                                 library.SetCurrentVariable(inputTxt[0]);
                             }
@@ -142,21 +144,8 @@ namespace Calculator
                             // computation
                             else
                             {
-                                var parser = new Parser(inputTxt);
-                                if (parser.ContainsOnlyValidChars)
-                                {
-                                    var expression = new Expression(parser);
-                                    if (expression != null && expression.Error == null)
-                                    {
-                                        library.CurrentVariable.Value = expression.Value;
-                                        library.CurrentVariable.LastOperation = inputTxt;
-                                        output.Result = $"{expression.Value}";
-                                    }
-                                    else
-                                    {
-                                        output.Result = "This operation couldn't compute. Please check your input.";
-                                    }
-                                }
+                                output.Result = library.Evaluate(inputTxt);
+                                
                             }
                         }
                         break;
@@ -177,7 +166,7 @@ namespace Calculator
         public Library() : base("Variables")
         {
             variables.Add(new Variable('x', false));
-            variables[0].Comment = "Default, unremovable variable. Use it to hold final result.";
+            variables[0].Comment = "Default, unremovable variable. Put final result in here.";
 
             variables.Add(new Variable('y'));
             variables[1].Comment = "Example, removable variable for intermediary calculations.";
@@ -244,7 +233,7 @@ namespace Calculator
                         {
                             CurrentVariable = variables[0];
                         }
-                        return $"Variable '{variable}' has been removed.";
+                        return $"Variable '{variable.Name}' has been removed.";
                     }
                     else
                     {
@@ -256,6 +245,34 @@ namespace Calculator
                     return $"Couldn't remove variable {name.Value}. It has not been created.";
                 }
             }
+        }
+
+        public string Evaluate(string inputTxt)
+        {
+            var parser = new Parser(inputTxt, this);
+            if (parser.ContainsOnlyValidChars)
+            {
+                var expression = new Expression(parser);
+                if (expression != null && expression.Error == null)
+                {
+                    CurrentVariable.Value = expression.Value;
+                    CurrentVariable.LastOperation = inputTxt;
+                    return $"{expression.Value}";
+                }
+                else
+                {
+                    return "This operation couldn't compute. Please check your input.";
+                }
+            }
+            else
+            {
+                return "Invalid characters in the input. Please use standard ASCII letters and numbers.";
+            }
+        }
+
+        public Variable Find(char name)
+        {
+            return variables.Find(x => x.Name == name);
         }
     }
 }

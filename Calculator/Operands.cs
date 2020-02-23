@@ -134,11 +134,6 @@ namespace Calculator
                         break;
                     }
                 }
-                else if (myOperand == null || lastOperand.Operator != null)
-                {
-                    Error = operand.Error;
-                    break;
-                }
 
                 // 3. get an operator
                 expressionPart = input.GetNextPart();
@@ -150,7 +145,7 @@ namespace Calculator
                     }
                     else
                     {
-                        Error = operand.Error;
+                        Error = input.GetError();
                         break;
                     }
                 }
@@ -161,6 +156,12 @@ namespace Calculator
 
                 // 4. get next part
                 expressionPart = input.GetNextPart();
+            }
+
+            // check for missing operand at the end
+            if (myOperand != null && lastOperand.Operator != null)
+            {
+                Error = input.GetError();
             }
         }
 
