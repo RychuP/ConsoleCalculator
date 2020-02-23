@@ -10,3 +10,11 @@ Anyway, some details about this calculator:
 - supports single letter variables that can be used in calculations
 - variables can be described with comments as a reminder of what they hold
 - type 'help' to show all the available commands
+
+## Sample Output (Screenshot)
+
+![screenshot](/Screenshot.png)
+
+The MIT License (MIT)
+
+Copyright (c) 2020 Ryszard Pyka
