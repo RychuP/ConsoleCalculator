@@ -58,6 +58,13 @@ namespace Calculator
                 {
                     if (operand.Error == null)
                     {
+                        // division by zero not allowed
+                        if (lastOperand != null && lastOperand.Operator.IsDivision && operand.Value == 0)
+                        {
+                            Error = input.GetError();
+                            break;
+                        }
+
                         if (!isPositive)
                         {
                             operand.IsPositive = false;
