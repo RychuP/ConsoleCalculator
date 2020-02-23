@@ -258,7 +258,7 @@ namespace Calculator
         {
             if (input.Length >= 2)
             {
-                input = input[1..^1];
+                input = input.Substring(1, input.Length - 2);
                 indexAdjustement++;
             }
         }
