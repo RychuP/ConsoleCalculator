@@ -6,7 +6,7 @@ namespace Calculator
     {
         public Output() : base("Output")
         {
-            Result = "Rychu's Calculator v0.4. Type 'help' for available commands.";
+            Result = "Rychu's Calculator v0.5. Type 'help' for available commands.";
         }
 
         public string Result { get; set; }

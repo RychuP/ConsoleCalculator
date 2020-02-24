@@ -6,7 +6,7 @@ namespace Calculator
     {
         // Fields
         char type;
-        static char[] supportedTypes = { '+', '-', '*', '/' };
+        static char[] supportedTypes = { '+', '-', '*', '/', '^' };
 
         // Constructor
         public Operator(char type)
@@ -15,7 +15,7 @@ namespace Calculator
             {
                 this.type = type;
             }
-            else throw new Exception("Attempt to use an unsupported operator");
+            else throw new Exception("Operator not implemented.");
         }
 
         // Properties
@@ -64,6 +64,14 @@ namespace Calculator
             get
             {
                 return (type == '/') ? true : false;
+            }
+        }
+
+        public bool IsExponentiation
+        {
+            get
+            {
+                return (type == '^') ? true : false;
             }
         }
 

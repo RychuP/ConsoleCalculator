@@ -6,7 +6,7 @@ namespace Calculator
     class Parser
     {
         // Fields
-        Regex validCharacters = new Regex(@"^[a-zA-Z0-9_()*\/\+-.]+$");
+        Regex validCharacters = new Regex(@"^[a-zA-Z0-9_()\^\/\+*-.]+$");
         Regex digitsOnly = new Regex("^[0-9]+$");
         string input;
         char currentChar;

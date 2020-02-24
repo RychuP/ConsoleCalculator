@@ -37,8 +37,9 @@ namespace Calculator
                 {
                     case "help":
                         output.Result =
-                            "- calculator accepts brackets, decimals, single letter variables and four basic operators '+ - * /'\n" +
-                            "- type a letter and press enter to introduce a new or switch to an existing variable\n" +
+                            "- calculator accepts brackets, decimals, single letter variables and five operators '+, -, *, /, ^'\n" +
+                            "- fractional exponents work in this form: ^ (2 / 3), or this: ^ 0.5\n" +
+                            "- type a letter to introduce a new variable or switch to an existing variable\n" +
                             "- type '#' followed by text to comment current variable\n" +
                             "- type '#' on its own to remove existing comment\n" +
                             "- type 'del' to delete current variable\n" +

@@ -1,4 +1,4 @@
-# Calculator v0.4
+# Calculator v0.5
 
 My first windows app written to learn C#, visual studio and what GitHub is all about. 
 
@@ -6,8 +6,10 @@ Coming over from javascript, php and other web development languages written in 
     
 Anyway, some details about this calculator:
 - console app
-- supports brackets and all basic operators
-- supports single letter variables that can be used in calculations
+- expressions can be grouped in brackets
+- implemented operations: addition, substraction, multiplication, division and exponantiation
+- division by zero is disallowed and so are operations that result in infinity or NaN
+- single letter variables store results and can be used in further calculations
 - variables can be described with comments as a reminder of what they hold
 - type 'help' to show all the available commands
 
