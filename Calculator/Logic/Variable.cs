@@ -49,7 +49,7 @@ namespace Calculator
                 Console.WriteLine("# " + Comment);
                 Console.ResetColor();
             }
-            Console.WriteLine("{0} = {1} ({2})\n", name, Value, LastOperation);
+            Console.WriteLine("{0} = {1} ({2})\n", name, Math.Round(Value, 2), LastOperation);
         }
     }
 }

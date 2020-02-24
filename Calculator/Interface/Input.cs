@@ -44,8 +44,13 @@ namespace Calculator
                             "- type 'del' to delete current variable\n" +
                             "- type 'del' followed by a lettter to delete specific variable\n" +
                             "- type 'del all' to delete all variables but current and x\n" +
+                            "- type 'full' to see the current variable with full precision (all fractional digits)\n" +
                             "- type 'help' to read these instructions again" +
                             "- type 'exit' to leave the application\n";
+                        break;
+
+                    case "full":
+                        output.Result = library.CurrentVariable.Value.ToString();
                         break;
 
                     case "exit":
