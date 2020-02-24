@@ -144,7 +144,7 @@ namespace Calculator
             }
             else
             {
-                return "Invalid characters in the input. Please use standard ASCII letters and numbers.";
+                return "Invalid characters in the input.";
             }
         }
 
