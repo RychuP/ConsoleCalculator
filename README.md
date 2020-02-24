@@ -13,7 +13,7 @@ Anyway, some details about this calculator:
 - variables can be described with comments as a reminder of what they hold
 - type 'help' to show all the available commands
 
-Icon by [Papirus Development Team](https://github.com/PapirusDevelopmentTeam).
+Calculator icon by [Papirus Development Team](https://github.com/PapirusDevelopmentTeam).
 
 The MIT License (MIT)
 

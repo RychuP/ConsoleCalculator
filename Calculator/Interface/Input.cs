@@ -46,7 +46,7 @@ namespace Calculator
                             "- type 'del' followed by a lettter to delete specific variable\n" +
                             "- type 'del all' to delete all variables but current and x\n" +
                             "- type 'full' to see the current variable with full precision (all fractional digits)\n" +
-                            "- type 'help' to read these instructions again" +
+                            "- type 'help' to read these instructions again\n" +
                             "- type 'exit' to leave the application\n";
                         break;
 
