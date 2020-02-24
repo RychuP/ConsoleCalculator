@@ -53,6 +53,23 @@ namespace Calculator
             }
         }
 
+        public string RemoveAll()
+        {
+            Variable x = variables[0];
+            int count = variables.Count;
+            variables.Clear();
+            variables.Add(x);
+            if (CurrentVariable != variables[0])
+            {
+                variables.Add(CurrentVariable);
+                return $"Deleted {count - 2} variables.";
+            }
+            else
+            {
+                return $"Deleted {count - 1} variables.";
+            }
+        }
+
         public string RemoveVar(char? name = null)
         {
             if (!name.HasValue)
@@ -103,9 +120,21 @@ namespace Calculator
                 var expression = new Expression(parser);
                 if (expression != null && expression.Error == null)
                 {
-                    CurrentVariable.Value = expression.Value;
-                    CurrentVariable.LastOperation = inputTxt;
-                    return $"{expression.Value}";
+                    double result = expression.Value;
+                    if (Double.IsInfinity(result))
+                    {
+                        return "This operation couldn't compute. Result is infinity.";
+                    }
+                    else if (Double.IsNaN(result))
+                    {
+                        return "This operation couldn't compute. Result is not a number.";
+                    }
+                    else
+                    {
+                        CurrentVariable.Value = result;
+                        CurrentVariable.LastOperation = inputTxt;
+                        return $"{expression.Value}";
+                    }
                 }
                 else
                 {

@@ -30,6 +30,7 @@ namespace Calculator
 
         public void Evaluate(string inputTxt)
         {
+            inputTxt = inputTxt.Trim();
             if (inputTxt.Length > 0)
             {
                 switch (inputTxt)
@@ -38,10 +39,13 @@ namespace Calculator
                         output.Result =
                             "- calculator accepts brackets, decimals, single letter variables and four basic operators '+ - * /'\n" +
                             "- type a letter and press enter to introduce a new or switch to an existing variable\n" +
-                            "- type '#' followed by text to comment current variable or just '#' to remove existing comment\n" +
-                            "- type 'del' to delete current variable or 'del' followed by a lettter to delete another variable\n" +
-                            "- type 'exit' to leave the application\n" +
-                            "- type 'help' to read these instructions again";
+                            "- type '#' followed by text to comment current variable\n" +
+                            "- type '#' on its own to remove existing comment\n" +
+                            "- type 'del' to delete current variable\n" +
+                            "- type 'del' followed by a lettter to delete specific variable\n" +
+                            "- type 'del all' to delete all variables but current and x\n" +
+                            "- type 'help' to read these instructions again" +
+                            "- type 'exit' to leave the application\n";
                         break;
 
                     case "exit":
@@ -71,7 +75,6 @@ namespace Calculator
                             if (inputTxt[0] == '#')
                             {
                                 inputTxt = inputTxt.Substring(1);
-                                inputTxt = inputTxt.Trim();
                                 library.CurrentVariable.Comment = inputTxt;
                             }
                             // deletion
@@ -79,10 +82,17 @@ namespace Calculator
                             {
                                 // skip 'del'
                                 inputTxt = inputTxt.Substring(3);
+                                // trim for the second time to get rid of spaces between del and word
                                 inputTxt = inputTxt.Trim();
+                                // remove one var
                                 if (inputTxt.Length == 1 && Char.IsLetter(inputTxt[0]))
                                 {
                                     output.Result = library.RemoveVar(inputTxt[0]);
+                                }
+                                // remove all vars but current and x
+                                else if (inputTxt == "all")
+                                {
+                                    output.Result = library.RemoveAll();
                                 }
                                 else
                                 {
@@ -93,7 +103,6 @@ namespace Calculator
                             else
                             {
                                 output.Result = library.Evaluate(inputTxt);
-
                             }
                         }
                         break;
