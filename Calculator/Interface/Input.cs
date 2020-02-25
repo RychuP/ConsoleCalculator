@@ -36,6 +36,7 @@ namespace Calculator
                 switch (inputTxt)
                 {
                     case "help":
+                    case "he":
                         output.Result =
                             "- calculator accepts brackets, decimals, single letter variables and five operators '+, -, *, /, ^'\n" +
                             "- fractional exponents work in this form: ^ (2 / 3), or this: ^ 0.5\n" +
@@ -44,22 +45,28 @@ namespace Calculator
                             "- type '#' on its own to remove existing comment\n" +
                             "- type 'del' to delete current variable\n" +
                             "- type 'del' followed by a lettter to delete specific variable\n" +
-                            "- type 'del all' to delete all variables but current and x\n" +
-                            "- type 'full' to see the current variable with full precision (all fractional digits)\n" +
-                            "- type 'help' to read these instructions again\n" +
-                            "- type 'exit' to leave the application\n";
+                            "- type 'da' or 'del all' to delete all variables but current and x\n" +
+                            "- type 'fu' or 'full' to see the current variable with full precision (all fractional digits)\n" +
+                            "- type 'he' or 'help' to read these instructions again\n" +
+                            "- type 'ex' or 'exit' to leave the application\n";
                         break;
 
                     case "full":
+                    case "fu":
                         output.Result = library.CurrentVariable.Value.ToString();
                         break;
 
                     case "exit":
+                    case "ex":
                         Exit = true;
                         break;
 
                     case "del":
                         output.Result = library.RemoveVar();
+                        break;
+
+                    case "da":
+                        output.Result = library.RemoveAll();
                         break;
 
                     default:
