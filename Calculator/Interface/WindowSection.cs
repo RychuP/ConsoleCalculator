@@ -17,21 +17,13 @@ namespace Calculator
             string hyphenatedHeader = "";
             int emptySpaceCount = 2;
             int hyphenAmount = HEADER_LENGTH - header.Length - emptySpaceCount;
+            
             double halfHyphenAmount = hyphenAmount / 2;
-            int leftSideHyphenAmount = (int)Math.Round(halfHyphenAmount);
-
-            for (int i = 0; i < leftSideHyphenAmount; i++)
-            {
-                hyphenatedHeader += "-";
-            }
+            int leftSideHyphenAmount = (int) Math.Round(halfHyphenAmount);
+            hyphenatedHeader += new String('-', leftSideHyphenAmount);
 
             int rightSideHyphenAmount = hyphenAmount - leftSideHyphenAmount;
-            hyphenatedHeader += $" {header} ";
-
-            for (int i = 0; i < rightSideHyphenAmount; i++)
-            {
-                hyphenatedHeader += "-";
-            }
+            hyphenatedHeader += $" {header} {new String('-', rightSideHyphenAmount)}";
 
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine(hyphenatedHeader);
