@@ -109,6 +109,8 @@ namespace Calculator
             }
         }
 
+        // library holds all the variables and it seems to be the most appropriate object
+        // to coordinate calculation logic
         public string Evaluate(string inputTxt)
         {
             var parser = new Parser(inputTxt, this);

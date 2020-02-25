@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace Calculator
 {
+    // main object coordinating all the others
     class Input : WindowSection
     {
         Output output = new Output();
@@ -28,6 +29,8 @@ namespace Calculator
             Evaluate(inputTxt);
         }
 
+        // this evaluation step is mainly for commands
+        // calculation logic is passed to library which holds all variables
         public void Evaluate(string inputTxt)
         {
             inputTxt = inputTxt.Trim();

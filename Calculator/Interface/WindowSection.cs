@@ -2,6 +2,7 @@
 
 namespace Calculator
 {
+    // common functionality for input, ouput and library 
     abstract class WindowSection
     {
         string header;
