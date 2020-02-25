@@ -7,7 +7,7 @@ namespace Calculator
     {
         // First operand in the que of operands
         Operand myOperand;
-        // Remembers last operand added to the que
+        // Last operand added to the que
         Operand lastOperand;
 
         // Constructor
@@ -58,13 +58,6 @@ namespace Calculator
                 {
                     if (operand.Error == null)
                     {
-                        // division by zero not allowed
-                        if (lastOperand != null && lastOperand.Operator.IsDivision && operand.Value == 0)
-                        {
-                            Error = input.GetError();
-                            break;
-                        }
-
                         if (!isPositive)
                         {
                             operand.IsPositive = false;
