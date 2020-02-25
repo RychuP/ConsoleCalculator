@@ -1,17 +1,12 @@
-# Calculator v0.5
+# Console Calculator v0.5
 
-My first windows app written to learn C#, visual studio and what GitHub is all about. 
-
-Coming over from javascript, php and other web development languages written in notepad++, got to say I am very impressed so far.
-    
-Anyway, some details about this calculator:
-- console app
-- expressions can be grouped in brackets
-- implemented operations: addition, substraction, multiplication, division and exponantiation
-- division by zero is disallowed and so are operations that result in infinity or NaN
-- single letter variables store results and can be used in further calculations
-- variables can be described with comments as a reminder of what they hold
-- type 'help' to show all the available commands
+Features:
+- addition, substraction, multiplication, division and exponantiation
+- single letter variables
+- brackets to group expressions
+- checks for division by zero and results of infinity and NaN
+- variable descriptions as a reminder of what they hold
+- commands (type 'help' to show all available)
 
 Calculator icon by [Papirus Development Team](https://github.com/PapirusDevelopmentTeam).
 

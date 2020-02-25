@@ -14,10 +14,7 @@ namespace Calculator
         public Library() : base("Variables")
         {
             variables.Add(new Variable('x', false));
-            variables[0].Comment = "Default, unremovable variable. Put final result in here.";
-
-            variables.Add(new Variable('y'));
-            variables[1].Comment = "Example, removable variable for intermediary calculations.";
+            variables[0].Comment = "Default var";
 
             CurrentVariable = variables[0];
         }
