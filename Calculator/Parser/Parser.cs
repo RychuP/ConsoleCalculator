@@ -24,7 +24,13 @@ namespace Calculator
         {
             originalInput = input;
             input = input.Replace(" ", "");
+            // replace function names with symbols (easier to read by parser)
             foreach (KeyValuePair<string, string> kvp in Function.Types)
+            {
+                input = input.Replace(kvp.Key, kvp.Value);
+            }
+            // replace constant names with symbols (easier to read by parser)
+            foreach (KeyValuePair<string, string> kvp in Constant.Predefined)
             {
                 input = input.Replace(kvp.Key, kvp.Value);
             }

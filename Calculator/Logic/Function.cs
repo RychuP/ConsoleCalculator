@@ -10,8 +10,7 @@ namespace Calculator
         public static readonly Dictionary<string, string> Types = new Dictionary<string, string>()
         {
             {"sin", "$"},
-            {"cos", "@"},
-            {"pi", "π"}
+            {"cos", "@"}
         };
 
         public Function() : base()

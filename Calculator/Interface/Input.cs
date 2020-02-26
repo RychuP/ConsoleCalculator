@@ -57,7 +57,8 @@ namespace Calculator
                             "- 'exit' (or 'ex') leaves application\n\n" +
                             "tips:\n" +
                             "- type a letter to introduce a new variable or switch to an existing one\n" +
-                            "- result of your input automaticaly gets assigned to the variable letter in square brackets -> no need to use '='\n" +
+                            "- result of your input automaticaly gets assigned to the variable letter\n" +
+                            "  in square brackets -> no need to use '='\n" +
                             "- fractional exponents work in this form: ^ (2 / 3), or this: ^ 0.5\n";
                             
                         break;

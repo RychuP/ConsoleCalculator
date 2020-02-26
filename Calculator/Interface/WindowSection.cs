@@ -6,7 +6,6 @@ namespace Calculator
     abstract class WindowSection
     {
         string header;
-        const int HEADER_LENGTH = 70;
 
         public WindowSection(string header)
         {
@@ -17,7 +16,7 @@ namespace Calculator
         {
             string hyphenatedHeader = "";
             int emptySpaceCount = 2;
-            int hyphenAmount = HEADER_LENGTH - header.Length - emptySpaceCount;
+            int hyphenAmount = Console.WindowWidth - header.Length - emptySpaceCount;
             
             double halfHyphenAmount = hyphenAmount / 2;
             int leftSideHyphenAmount = (int) Math.Round(halfHyphenAmount);

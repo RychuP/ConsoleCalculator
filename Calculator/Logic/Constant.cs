@@ -1,8 +1,15 @@
-﻿namespace Calculator
+﻿using System.Collections.Generic;
+
+namespace Calculator
 {
     class Constant : Operand
     {
         double myValue;
+
+        public static readonly Dictionary<string, string> Predefined = new Dictionary<string, string>()
+        {
+            {"pi", "π"}
+        };
 
         public Constant(double value) : base()
         {
