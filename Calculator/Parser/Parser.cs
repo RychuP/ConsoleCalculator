@@ -93,94 +93,83 @@ namespace Calculator
 
                     else if (!assemblingDecimal)
                     {
-                        if (currentChar == '.')
+                        if (output.IsEmpty)
                         {
-                            if (output.IsDigitsOnly)
-                            {
-                                assemblingDecimal = true;
-                                output.Add(currentChar);
-                            }
-                            else
-                            {
-                                return GetError();
-                            }
-                        }
-
-                        else if (currentChar == '(')
-                        {
-                            // string begins with the open bracket
-                            if (output.IsEmpty)
+                            if (currentChar == '(')
                             {
                                 openBracketCount++;
                                 output.Add(currentChar);
                             }
-                            // not expecting an open bracket
-                            else
-                            {
-                                return GetError();
-                            }
-                        }
 
-                        // 3. case: closing bracket
-                        else if (currentChar == ')')
-                        {
                             // not expecting a closing bracket
-                            if (output.IsEmpty)
+                            else if (currentChar == ')')
                             {
                                 return GetError();
                             }
-                        }
 
-                        // 4. case: operator
-                        else if (Operator.IsSupported(currentChar))
-                        {
-                            if (output.IsEmpty)
+                            else if (Operator.IsSupported(currentChar))
                             {
                                 var op = new Operator(currentChar);
                                 IncrementIndex();
                                 return op;
                             }
 
-                            // operator marks end of this operand
-                            else break;
-                        }
-
-                        // 5. case: variable
-                        else if (letterOnly.IsMatch($"{currentChar}"))
-                        {
-                            Variable variable = library.Find(currentChar);
-                            if (output.IsEmpty &&
-                                variable != null &&
-                                // end of input string or next char is not a letter
-                                (currentIndex + 1 == input.Length || !Char.IsLetter(input[currentIndex + 1])))
+                            else if (letterOnly.IsMatch($"{currentChar}"))
                             {
-                                IncrementIndex();
-                                return new Constant(variable.Value);
+                                Variable variable = library.Find(currentChar);
+                                if (variable != null &&
+                                    // end of input string or next char is not a letter
+                                    (currentIndex + 1 == input.Length || !Char.IsLetter(input[currentIndex + 1])))
+                                {
+                                    IncrementIndex();
+                                    return new Constant(variable.Value);
+                                }
+                                else
+                                {
+                                    return GetError();
+                                }
                             }
-                            else
-                            {
-                                return GetError();
-                            }
-                        }
 
-                        // 6. pi
-                        else if (currentChar == 'π')
-                        {
-                            if (output.IsEmpty)
+                            else if (currentChar == 'π')
                             {
                                 IncrementIndex();
                                 return new Constant(Math.PI);
                             }
+
+                            // anything else
                             else
                             {
                                 return GetError();
                             }
                         }
 
-                        // 6. case: some other unsupported char
                         else
                         {
-                            return GetError();
+                            // when the output is not empty and there are no open brackets, the only thing expected other than a digit is a dot or an operator
+                            if (currentChar == '.')
+                            {
+                                if (output.IsDigitsOnly)
+                                {
+                                    assemblingDecimal = true;
+                                    output.Add(currentChar);
+                                }
+                                else
+                                {
+                                    return GetError();
+                                }
+                            }
+
+                            // operator marks end of this operand
+                            else if (Operator.IsSupported(currentChar))
+                            {
+                                break;
+                            }
+
+                            // anything else other than a dot or operator means error
+                            else
+                            {
+                                return GetError();
+                            }
                         }
                     }
                     else
