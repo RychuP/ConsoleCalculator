@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Calculator
@@ -6,9 +7,11 @@ namespace Calculator
     class Parser
     {
         // Fields
-        Regex validCharacters = new Regex(@"^[a-zA-Z0-9_()\^\/\+*-.]+$");
+        Regex validCharacters = new Regex(@"^[a-zA-Z0-9_()\^\/\+*-. ]+$");
         Regex digitsOnly = new Regex("^[0-9]+$");
+        Regex letterOnly = new Regex("^[a-zA-Z]+$");
         string input;
+        string originalInput;
         char currentChar;
         int currentIndex = 0;
         // difference between the index in this instance and the original
@@ -19,7 +22,12 @@ namespace Calculator
         // Constructors
         public Parser(string input, Library library)
         {
+            originalInput = input;
             input = input.Replace(" ", "");
+            foreach (KeyValuePair<string, string> kvp in Function.Types)
+            {
+                input = input.Replace(kvp.Key, kvp.Value);
+            }
             this.library = library;
             this.input = input;
             Reset();
@@ -38,7 +46,7 @@ namespace Calculator
         {
             get
             {
-                return validCharacters.IsMatch(input);
+                return validCharacters.IsMatch(originalInput);
             }
         }
 
@@ -132,15 +140,30 @@ namespace Calculator
                         }
 
                         // 5. case: variable
-                        else if (Char.IsLetter(currentChar))
+                        else if (letterOnly.IsMatch($"{currentChar}"))
                         {
                             Variable variable = library.Find(currentChar);
                             if (output.IsEmpty &&
                                 variable != null &&
+                                // end of input string or next char is not a letter
                                 (currentIndex + 1 == input.Length || !Char.IsLetter(input[currentIndex + 1])))
                             {
                                 IncrementIndex();
                                 return new Constant(variable.Value);
+                            }
+                            else
+                            {
+                                return GetError();
+                            }
+                        }
+
+                        // 6. pi
+                        else if (currentChar == 'π')
+                        {
+                            if (output.IsEmpty)
+                            {
+                                IncrementIndex();
+                                return new Constant(Math.PI);
                             }
                             else
                             {

@@ -41,17 +41,25 @@ namespace Calculator
                     case "help":
                     case "he":
                         output.Result =
-                            "- calculator accepts brackets, decimals, single letter variables and five operators '+, -, *, /, ^'\n" +
-                            "- fractional exponents work in this form: ^ (2 / 3), or this: ^ 0.5\n" +
-                            "- type a letter to introduce a new variable or switch to an existing variable\n" +
-                            "- type '#' followed by text to comment current variable\n" +
-                            "- type '#' on its own to remove existing comment\n" +
-                            "- type 'del' to delete current variable\n" +
-                            "- type 'del' followed by a lettter to delete specific variable\n" +
-                            "- type 'da' or 'del all' to delete all variables but current and x\n" +
-                            "- type 'fu' or 'full' to see the current variable with full precision (all fractional digits)\n" +
-                            "- type 'he' or 'help' to read these instructions again\n" +
-                            "- type 'ex' or 'exit' to leave the application\n";
+                            "calculator accepts:\n" +
+                            "- brackets: ()\n" +
+                            "- decimals: 123.123\n" +
+                            "- single letter variables: a-z A-Z\n" +
+                            "- five operators +, -, *, /, ^\n" +
+                            "- constants: pi\n" +
+                            "- functions: work in progres...\n\n" +
+                            "commands:\n" +
+                            "- '#' followed by text adds comment to current variable (no text: removes comment)\n" +
+                            "- 'del' deletes current variable (also: 'del <letter>' removes specific var) \n" +
+                            "- 'del all' (or 'da') deletes all variables but current and x\n" +
+                            "- 'full' (or 'fu') shows current variable with full precision (all fractional digits)\n" +
+                            "- 'help' (or 'he') shows these instructions\n" +
+                            "- 'exit' (or 'ex') leaves application\n\n" +
+                            "tips:\n" +
+                            "- type a letter to introduce a new variable or switch to an existing one\n" +
+                            "- result of your input automaticaly gets assigned to the variable letter in square brackets -> no need to use '='\n" +
+                            "- fractional exponents work in this form: ^ (2 / 3), or this: ^ 0.5\n";
+                            
                         break;
 
                     case "full":
@@ -73,6 +81,7 @@ namespace Calculator
                         break;
 
                     default:
+                        // variable change or clear comment
                         if (inputTxt.Length == 1 && !Char.IsDigit(inputTxt[0]))
                         {
                             if (asciiLettersOnly.IsMatch(inputTxt))
