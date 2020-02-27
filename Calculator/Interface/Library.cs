@@ -31,7 +31,6 @@ namespace Calculator
             {
                 v.Print();
             }
-            Console.WriteLine();
         }
 
         public void SetCurrentVariable(char name)

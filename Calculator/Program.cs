@@ -4,10 +4,10 @@ namespace Calculator
 {
     class Program
     {
-        public static readonly string Title = $"Rychu's Console Calculator v0.5";
+        public static readonly string Title = $"Rychu's Console Calculator v0.51";
         static void Main(string[] args)
         {
-            Console.WindowHeight = 40;
+            Console.WindowHeight = 30;
             Console.BufferWidth = Console.WindowWidth = 90;
             Console.Title = Title;
             Input input = new Input();

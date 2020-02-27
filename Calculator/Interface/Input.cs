@@ -88,10 +88,12 @@ namespace Calculator
                             if (asciiLettersOnly.IsMatch(inputTxt))
                             {
                                 library.SetCurrentVariable(inputTxt[0]);
+                                output.Result = "Variable changed.";
                             }
                             else if (inputTxt[0] == '#')
                             {
                                 library.CurrentVariable.Comment = "";
+                                output.Result = "Comment removed.";
                             }
                         }
                         // calculations 

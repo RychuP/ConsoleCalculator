@@ -14,7 +14,7 @@ namespace Calculator
         public void Print()
         {
             PrintHeader();
-            Console.WriteLine(Result + "\n\n");
+            Console.WriteLine(Result + "\n");
         }
     }
 }

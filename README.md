@@ -1,10 +1,11 @@
-# Console Calculator v0.5
+# Console Calculator v0.51
 
 Features:
 - addition, substraction, multiplication, division and exponantiation
 - single letter variables
+- constant pi
+- functions (work in progress)
 - brackets to group expressions
-- checks for division by zero and results of infinity and NaN
 - variable descriptions as a reminder of what they hold
 - commands (type 'help' to show all available)
 
