@@ -4,14 +4,17 @@ namespace Calculator
 {
     abstract class Operand
     {
-        // Constructor
-        public Operand()
-        {
-            IsPositive = true;
-        }
         // Properties
-        public abstract double Value { get; set; }
-        public bool IsPositive { get; set; }
+        public double Value { get; set; }
+        public bool IsPositive {
+            set
+            {
+                if (!value)
+                {
+                    Value = -Value;
+                }
+            }
+        }
         public Operand NextOperand { get; set; }
         public Operator Operator { get; set; }
         public Error Error { get; protected set; }

@@ -3,30 +3,28 @@ using System.Collections.Generic;
 
 namespace Calculator
 {
-    class Function : Operand
+    class Function : Expression
     {
-        double value;
-
-        public static readonly Dictionary<string, string> Types = new Dictionary<string, string>()
+        public static readonly Dictionary<string, char> Types = new Dictionary<string, char>()
         {
-            {"sin", "$"},
-            {"cos", "@"}
+            {"sin", '$'},
+            {"cos", '@'}
         };
 
-        public Function() : base()
+        public Function(char functionType, Parser input) : base(input)
         {
-
-        }
-
-        public override double Value
-        {
-            get {
-                return value;
-            }
-
-            set
+            switch (functionType)
             {
-                this.value = value;
+                case '$':
+                    Value = Math.Sin(base.Value * (Math.PI / 180));
+                    break;
+
+                case '@':
+                    Value = Math.Cos(base.Value * (Math.PI / 180));
+                    break;
+
+                default:
+                    throw new Exception("Unknown function symbol in the constructor");
             }
         }
     }

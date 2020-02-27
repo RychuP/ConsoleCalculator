@@ -99,31 +99,10 @@ namespace Calculator
             {
                 Error = input.GetError();
             }
-        }
 
-        // Properties
-
-        // expression's value is held in its operand, which should somewhere down the line be a constant
-        public override double Value
-        {
-            get
-            {
-                myOperand.Evaluate();
-                if (IsPositive)
-                {
-                    return myOperand.Value;
-                }
-                else
-                {
-                    return -myOperand.Value;
-                }
-            }
-
-            set
-            {
-                myOperand.Evaluate();
-                myOperand.Value = value;
-            }
+            // evaluate contents
+            myOperand.Evaluate();
+            Value = myOperand.Value;
         }
 
         // Methods

@@ -25,14 +25,14 @@ namespace Calculator
             originalInput = input;
             input = input.Replace(" ", "");
             // replace function names with symbols (easier to read by parser)
-            foreach (KeyValuePair<string, string> kvp in Function.Types)
+            foreach (KeyValuePair<string, char> kvp in Function.Types)
             {
-                input = input.Replace(kvp.Key, kvp.Value);
+                input = input.Replace(kvp.Key, $"{kvp.Value}");
             }
             // replace constant names with symbols (easier to read by parser)
-            foreach (KeyValuePair<string, string> kvp in Constant.Predefined)
+            foreach (KeyValuePair<string, char> kvp in Constant.Predefined)
             {
-                input = input.Replace(kvp.Key, kvp.Value);
+                input = input.Replace(kvp.Key, $"{kvp.Value}");
             }
             this.library = library;
             this.input = input;
@@ -80,108 +80,135 @@ namespace Calculator
             Parser output = StartOutput();
             int openBracketCount = 0;
             bool assemblingDecimal = false;
+            bool assemblingFunction = false;
+            // some random char to throw exception if function symbol doesn't get assigned when it should
+            char functionType = '?';
 
             while (currentIndex < input.Length)
             {
                 // when there is no open brackets
                 if (openBracketCount == 0)
                 {
-                    if (Char.IsDigit(currentChar))
+                    // after the function symbol the only expected char is open bracket
+                    if (assemblingFunction)
                     {
-                        output.Add(currentChar);
-                    }
-
-                    else if (!assemblingDecimal)
-                    {
-                        if (output.IsEmpty)
+                        if (currentChar == '(')
                         {
-                            if (currentChar == '(')
-                            {
-                                openBracketCount++;
-                                output.Add(currentChar);
-                            }
-
-                            // not expecting a closing bracket
-                            else if (currentChar == ')')
-                            {
-                                return GetError();
-                            }
-
-                            else if (Operator.IsSupported(currentChar))
-                            {
-                                var op = new Operator(currentChar);
-                                IncrementIndex();
-                                return op;
-                            }
-
-                            else if (letterOnly.IsMatch($"{currentChar}"))
-                            {
-                                Variable variable = library.Find(currentChar);
-                                if (variable != null &&
-                                    // end of input string or next char is not a letter
-                                    (currentIndex + 1 == input.Length || !Char.IsLetter(input[currentIndex + 1])))
-                                {
-                                    IncrementIndex();
-                                    return new Constant(variable.Value);
-                                }
-                                else
-                                {
-                                    return GetError();
-                                }
-                            }
-
-                            else if (currentChar == 'π')
-                            {
-                                IncrementIndex();
-                                return new Constant(Math.PI);
-                            }
-
-                            // anything else
-                            else
-                            {
-                                return GetError();
-                            }
-                        }
-
-                        else
-                        {
-                            // when the output is not empty and there are no open brackets, the only thing expected other than a digit is a dot or an operator
-                            if (currentChar == '.')
-                            {
-                                if (output.IsDigitsOnly)
-                                {
-                                    assemblingDecimal = true;
-                                    output.Add(currentChar);
-                                }
-                                else
-                                {
-                                    return GetError();
-                                }
-                            }
-
-                            // operator marks end of this operand
-                            else if (Operator.IsSupported(currentChar))
-                            {
-                                break;
-                            }
-
-                            // anything else other than a dot or operator means error
-                            else
-                            {
-                                return GetError();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        // only operator or end of input can terminate decimal assembly
-                        if (Operator.IsSupported(currentChar))
-                        {
-                            return new Constant(output.ToDouble());
+                            openBracketCount++;
+                            output.Add(currentChar);
                         }
                         else
                         {
                             return GetError();
+                        }
+                    }
+
+                    else
+                    {
+                        if (Char.IsDigit(currentChar))
+                        {
+                            output.Add(currentChar);
+                        }
+
+                        else if (!assemblingDecimal)
+                        {
+                            if (output.IsEmpty)
+                            {
+                                // open bracket
+                                if (currentChar == '(')
+                                {
+                                    openBracketCount++;
+                                    output.Add(currentChar);
+                                }
+
+                                // operators
+                                else if (Operator.IsSupported(currentChar))
+                                {
+                                    var op = new Operator(currentChar);
+                                    IncrementIndex();
+                                    return op;
+                                }
+
+                                // variable letters
+                                else if (letterOnly.IsMatch($"{currentChar}"))
+                                {
+                                    Variable variable = library.Find(currentChar);
+                                    bool nextCharNotLetter = currentIndex + 1 == input.Length || !Char.IsLetter(input[currentIndex + 1]);
+                                    if (variable != null && nextCharNotLetter)
+                                    {
+                                        IncrementIndex();
+                                        return new Constant(variable.Value);
+                                    }
+                                    else
+                                    {
+                                        return GetError();
+                                    }
+                                }
+
+                                // pi
+                                else if (currentChar == Constant.Predefined["pi"])
+                                {
+                                    IncrementIndex();
+                                    return new Constant(Math.PI);
+                                }
+
+                                // function symbols
+                                else if (currentChar == Function.Types["sin"] ||
+                                         currentChar == Function.Types["cos"])
+                                {
+                                    assemblingFunction = true;
+                                    functionType = currentChar;
+                                }
+
+                                // everything else
+                                else
+                                {
+                                    return GetError();
+                                }
+                            }
+
+                            // output not empty
+                            else
+                            {
+                                // the only thing expected other than a digit is a dot or an operator
+                                if (currentChar == '.')
+                                {
+                                    if (output.IsDigitsOnly)
+                                    {
+                                        assemblingDecimal = true;
+                                        output.Add(currentChar);
+                                    }
+                                    else
+                                    {
+                                        return GetError();
+                                    }
+                                }
+
+                                // operator marks end of this operand
+                                else if (Operator.IsSupported(currentChar))
+                                {
+                                    break;
+                                }
+
+                                // anything else other than a dot or operator means error
+                                else
+                                {
+                                    return GetError();
+                                }
+                            }
+                        }
+
+                        else
+                        {
+                            // only operator or end of input can terminate decimal assembly
+                            if (Operator.IsSupported(currentChar))
+                            {
+                                return new Constant(output.ToDouble());
+                            }
+                            else
+                            {
+                                return GetError();
+                            }
                         }
                     }
                 }
@@ -205,7 +232,7 @@ namespace Calculator
                             IncrementIndex();
                             output.TrimBrackets();
                             output.Reset();
-                            // this is why we are using if and not switch here
+                            // exit the while loop
                             break;
                         }
                     }
@@ -223,7 +250,20 @@ namespace Calculator
             // case: end of input -> finalize
             if (!output.IsEmpty)
             {
-                if (output.IsDigitsOnly || assemblingDecimal)
+                if (assemblingFunction)
+                {
+                    if (openBracketCount == 0)
+                    {
+                        return new Function(functionType, output);
+                    }
+
+                    else
+                    {
+                        return GetError();
+                    }
+                }
+
+                else if (output.IsDigitsOnly || assemblingDecimal)
                 {
                     return new Constant(output.ToDouble());
                 }
