@@ -43,13 +43,40 @@ namespace Calculator
         /* ------------- Methods -------------- */
         public void Print()
         {
+            // display comment
             if (Comment.Length > 0)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("# " + Comment);
                 Console.ResetColor();
             }
-            Console.WriteLine("{0} = {1} ({2})\n", name, Math.Round(Value, 2), LastOperation);
+
+            // format value
+            string valueToDisplay;
+            bool approximation = false;
+            if ((Value % 1) != 0)
+            {
+                decimal valueAsDecimal = (decimal) Value;
+                int decimalDigitCount = BitConverter.GetBytes(decimal.GetBits(valueAsDecimal)[3])[2];
+                if (decimalDigitCount > 2)
+                {
+                    valueToDisplay = String.Format("{0:0.00}", Value) + "..";
+                    approximation = true;
+                }
+                else
+                {
+                    valueToDisplay = Value.ToString();
+                }
+                    
+            }
+            else
+            {
+                valueToDisplay = Value.ToString();
+            }
+
+            // display value
+            string equalitySign = approximation ? "≈" : "=";
+            Console.WriteLine("{0} {1} {2} [{3}]\n", name, equalitySign, valueToDisplay, LastOperation);
         }
     }
 }

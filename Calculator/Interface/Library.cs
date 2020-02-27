@@ -132,7 +132,6 @@ namespace Calculator
                     {
                         CurrentVariable.Value = result;
                         CurrentVariable.LastOperation = inputTxt;
-                        result = Math.Round(result, 2);
                         return $"{result}";
                     }
                 }
