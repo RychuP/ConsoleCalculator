@@ -82,7 +82,7 @@ namespace Calculator
             bool assemblingDecimal = false;
             bool assemblingFunction = false;
             // some random char to throw exception if function symbol doesn't get assigned when it should
-            char functionType = '?';
+            char functionType = Symbol.Error;
 
             while (currentIndex < input.Length)
             {
@@ -149,8 +149,16 @@ namespace Calculator
                                         IncrementIndex();
                                         return new Constant(Math.PI);
 
+                                    case Symbol.Dgt:
+                                        IncrementIndex();
+                                        return new Constant(Math.PI / 180);
+
                                     case Symbol.Sin:
                                     case Symbol.Cos:
+                                    case Symbol.Tan:
+                                    case Symbol.Csc:
+                                    case Symbol.Sec:
+                                    case Symbol.Cot:
                                         assemblingFunction = true;
                                         functionType = currentChar;
                                         break;
