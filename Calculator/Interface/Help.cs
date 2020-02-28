@@ -13,8 +13,8 @@ namespace Calculator
                 "- decimals: 123.123",
                 "- single letter variables: a-z A-Z",
                 "- five operators +, -, *, /, ^",
-                "- constants: pi",
-                "- functions: sin, cos",
+                "- constants: pi, dgt (degrees to radians: pi / 180)",
+                "- functions: sin, cos, tan (tg), csc, sec, cot (ctg)",
                 "",
                 "$Commands:",
                 "- '# <description>' add comment to current variable (no description: remove comment)",
@@ -31,7 +31,7 @@ namespace Calculator
                 "",
                 "  For brevity, results with decimal digits in 'Variables' window are displayed",
                 "  rounded to 2 decimal places. Underlying value is stored with full precision.",
-                "  You can change this behaviour in settings."
+                "  You can change this behaviour in settings (to be done...)"
             } }
         };
 
