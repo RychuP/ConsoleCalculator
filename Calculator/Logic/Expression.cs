@@ -94,15 +94,26 @@ namespace Calculator
                 expressionPart = input.GetNextPart();
             }
 
-            // check for missing operand at the end
-            if (myOperand != null && lastOperand.Operator != null)
+
+            if (myOperand == null)
             {
                 Error = input.GetError();
             }
+            else
+            {
+                // check for missing operand at the end
+                if (lastOperand.Operator != null)
+                {
+                    Error = input.GetError();
+                }
 
-            // evaluate contents
-            myOperand.Evaluate();
-            Value = myOperand.Value;
+                else
+                {
+                    // evaluate contents
+                    myOperand.Evaluate();
+                    Value = myOperand.Value;
+                }
+            }
         }
 
         // Methods

@@ -6,7 +6,7 @@ namespace Calculator
     {
         public static readonly Dictionary<string, char> Predefined = new Dictionary<string, char>()
         {
-            {"pi", 'π'}
+            {"pi", Symbol.Pi}
         };
 
         public Constant(double value) : base()

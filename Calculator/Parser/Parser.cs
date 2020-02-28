@@ -114,15 +114,7 @@ namespace Calculator
                         {
                             if (output.IsEmpty)
                             {
-                                // open bracket
-                                if (currentChar == '(')
-                                {
-                                    openBracketCount++;
-                                    output.Add(currentChar);
-                                }
-
-                                // operators
-                                else if (Operator.IsSupported(currentChar))
+                                if (Operator.IsSupported(currentChar))
                                 {
                                     var op = new Operator(currentChar);
                                     IncrementIndex();
@@ -145,25 +137,26 @@ namespace Calculator
                                     }
                                 }
 
-                                // pi
-                                else if (currentChar == Constant.Predefined["pi"])
-                                {
-                                    IncrementIndex();
-                                    return new Constant(Math.PI);
-                                }
-
-                                // function symbols
-                                else if (currentChar == Function.Types["sin"] ||
-                                         currentChar == Function.Types["cos"])
-                                {
-                                    assemblingFunction = true;
-                                    functionType = currentChar;
-                                }
-
                                 // everything else
-                                else
+                                else switch (currentChar)
                                 {
-                                    return GetError();
+                                    case '(':
+                                            openBracketCount++;
+                                            output.Add(currentChar);
+                                            break;
+
+                                    case Symbol.Pi:
+                                        IncrementIndex();
+                                        return new Constant(Math.PI);
+
+                                    case Symbol.Sin:
+                                    case Symbol.Cos:
+                                        assemblingFunction = true;
+                                        functionType = currentChar;
+                                        break;
+
+                                    default:
+                                        return GetError();
                                 }
                             }
 
