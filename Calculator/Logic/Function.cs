@@ -16,9 +16,7 @@ namespace Calculator
             switch (functionType)
             {
                 case Symbol.Sin:
-                    // solve the floating point inaccuracy
-                    if (base.Value == 180) Value = 0;
-                    else Value = Math.Sin(base.Value * (Math.PI / 180));
+                    Value = Math.Sin(base.Value * (Math.PI / 180));
                     break;
 
                 case Symbol.Cos:

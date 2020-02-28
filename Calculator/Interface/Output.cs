@@ -6,7 +6,7 @@ namespace Calculator
     {
         public Output() : base("Output")
         {
-            Result = $"{Program.Title}. Type 'help' for available commands.";
+            Result = $"{Program.Title}. Type 'he' for help, 'se' for settings.";
         }
 
         public string Result { get; set; }

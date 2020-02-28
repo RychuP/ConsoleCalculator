@@ -8,6 +8,7 @@ namespace Calculator
     {
         Output output = new Output();
         Library library = new Library();
+        Help help = new Help();
         Regex asciiLettersOnly = new Regex(@"^[a-zA-Z]+$");
 
         public Input() : base("Input")
@@ -40,27 +41,8 @@ namespace Calculator
                 {
                     case "help":
                     case "he":
-                        output.Result =
-                            "calculator accepts:\n" +
-                            "- brackets: ()\n" +
-                            "- decimals: 123.123\n" +
-                            "- single letter variables: a-z A-Z\n" +
-                            "- five operators +, -, *, /, ^\n" +
-                            "- constants: pi\n" +
-                            "- functions: work in progres...\n\n" +
-                            "commands:\n" +
-                            "- '#' followed by text adds comment to current variable (no text: removes comment)\n" +
-                            "- 'del' deletes current variable (also: 'del <letter>' removes specific var) \n" +
-                            "- 'del all' (or 'da') deletes all variables but current and x\n" +
-                            "- 'full' (or 'fu') shows current variable with full precision (all fractional digits)\n" +
-                            "- 'help' (or 'he') shows these instructions\n" +
-                            "- 'exit' (or 'ex') leaves application\n\n" +
-                            "tips:\n" +
-                            "- type a letter to introduce a new variable or switch to an existing one\n" +
-                            "- result of your input automaticaly gets assigned to the variable letter\n" +
-                            "  in square brackets -> no need to use '='\n" +
-                            "- fractional exponents work in this form: ^ (2 / 3), or this: ^ 0.5\n";
-                            
+                        help.Print();
+                        Print();
                         break;
 
                     case "full":
@@ -73,12 +55,16 @@ namespace Calculator
                         Exit = true;
                         break;
 
-                    case "del":
+                    case "de":
                         output.Result = library.RemoveVar();
                         break;
 
                     case "da":
                         output.Result = library.RemoveAll();
+                        break;
+
+                    case "settings":
+                    case "se":
                         break;
 
                     default:
@@ -106,7 +92,7 @@ namespace Calculator
                                 library.CurrentVariable.Comment = inputTxt;
                             }
                             // deletion
-                            else if (inputTxt.StartsWith("del"))
+                            else if (inputTxt.StartsWith("de"))
                             {
                                 // skip 'del'
                                 inputTxt = inputTxt.Substring(3);
