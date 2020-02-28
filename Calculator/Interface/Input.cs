@@ -66,6 +66,7 @@ namespace Calculator
 
                     case "settings":
                     case "se":
+                        settings.Print();
                         break;
 
                     default:

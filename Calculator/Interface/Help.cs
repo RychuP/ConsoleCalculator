@@ -13,7 +13,7 @@ namespace Calculator
                 "- decimals: 123.123",
                 "- single letter variables: a-z A-Z",
                 "- five operators +, -, *, /, ^",
-                "- constants: pi, dgt (degrees to radians: pi / 180)",
+                "- constants: pi, dtr (degrees to radians: pi / 180)",
                 "- functions: sin, cos, tan (tg), csc, sec, cot (ctg)",
                 "",
                 "$Commands:",
@@ -26,12 +26,13 @@ namespace Calculator
                 "",
                 "$Variables:",
                 "  Type a letter to introduce a new variable or switch to an existing one.",
-                "  For example, to create a variable 'y' with a value of '2':",
-                "  type y, press enter, type 2, press enter.",
-                "",
                 "  For brevity, results with decimal digits in 'Variables' window are displayed",
                 "  rounded to 2 decimal places. Underlying value is stored with full precision.",
-                "  You can change this behaviour in settings (to be done...)"
+                "  You can change this behaviour in settings.",
+                "",
+                "$Functions:",
+                "  Built in C# math trigonometric functions are not perfectly accurate.",
+                "  Some results are a tiny fraction off."
             } }
         };
 
@@ -40,14 +41,14 @@ namespace Calculator
 
         }
 
-        public void Print(string topic = "general")
+        public void Print(string title = "general")
         {
-            if (topics.ContainsKey(topic))
+            if (topics.ContainsKey(title))
             {
                 Console.Clear();
                 PrintHeader();
 
-                foreach (string line in topics[topic])
+                foreach (string line in topics[title])
                 {
                     if (line.Length > 0 && line[0] == '$')
                     {

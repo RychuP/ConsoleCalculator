@@ -6,7 +6,7 @@ namespace Calculator
     {
         public const char Error = '?';
         public const char Pi = 'π';
-        public const char Dgt = '€';
+        public const char Dtr = '€';
         public const char Sin = '$';
         public const char Cos = '©';
         public const char Tan = '!';

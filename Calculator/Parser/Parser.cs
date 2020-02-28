@@ -149,7 +149,7 @@ namespace Calculator
                                         IncrementIndex();
                                         return new Constant(Math.PI);
 
-                                    case Symbol.Dgt:
+                                    case Symbol.Dtr:
                                         IncrementIndex();
                                         return new Constant(Math.PI / 180);
 
