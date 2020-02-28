@@ -13,9 +13,9 @@ namespace Calculator
         /* ------------ Constructor ----------- */
         public Library() : base("Variables")
         {
+            // default var on startup
             variables.Add(new Variable('x', false));
             variables[0].Comment = "Default var";
-
             CurrentVariable = variables[0];
         }
 

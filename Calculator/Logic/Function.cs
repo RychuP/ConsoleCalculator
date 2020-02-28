@@ -20,33 +20,33 @@ namespace Calculator
 
         public Function(char functionType, Parser input) : base(input)
         {
-            double angleInDegrees = base.Value * (Math.PI / 180);
+            double angle = Settings.AnglesInRadians ? base.Value : base.Value * (Math.PI / 180);
 
             switch (functionType)
             {
                 case Symbol.Sin:
-                    Value = Math.Sin(angleInDegrees);
+                    Value = Math.Sin(angle);
                     break;
 
                 case Symbol.Cos:
-                    Value = Math.Cos(angleInDegrees);
+                    Value = Math.Cos(angle);
                     break;
 
                 case Symbol.Tan:
-                    Value = Math.Tan(angleInDegrees);
+                    Value = Math.Tan(angle);
                     break;
 
 
                 case Symbol.Csc:
-                    Value = 1 / Math.Sin(angleInDegrees);
+                    Value = 1 / Math.Sin(angle);
                     break;
 
                 case Symbol.Sec:
-                    Value = 1 / Math.Cos(angleInDegrees);
+                    Value = 1 / Math.Cos(angle);
                     break;
 
                 case Symbol.Cot:
-                    Value = 1 / Math.Tan(angleInDegrees);
+                    Value = 1 / Math.Tan(angle);
                     break;
 
 

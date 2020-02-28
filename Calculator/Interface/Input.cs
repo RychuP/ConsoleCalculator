@@ -9,6 +9,7 @@ namespace Calculator
         Output output = new Output();
         Library library = new Library();
         Help help = new Help();
+        Settings settings = new Settings();
         Regex asciiLettersOnly = new Regex(@"^[a-zA-Z]+$");
 
         public Input() : base("Input")

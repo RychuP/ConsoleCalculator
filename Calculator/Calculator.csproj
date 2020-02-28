@@ -80,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface\Settings.cs" />
     <Compile Include="Interface\Help.cs" />
     <Compile Include="Logic\Symbol.cs" />
     <Compile Include="Logic\Function.cs" />

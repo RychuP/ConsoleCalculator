@@ -58,9 +58,10 @@ namespace Calculator
             {
                 decimal valueAsDecimal = (decimal) Value;
                 int decimalDigitCount = BitConverter.GetBytes(decimal.GetBits(valueAsDecimal)[3])[2];
-                if (decimalDigitCount > 2)
+                if (Settings.DisplayDecimalDigitsRounded && decimalDigitCount > 2)
                 {
-                    valueToDisplay = String.Format("{0:0.00}", Value) + "..";
+                    string format = "{0:0." + new String('0', Settings.DecimalPlacesToShow) + "}";
+                    valueToDisplay = String.Format(format, Value) + "..";
                     approximation = true;
                 }
                 else
