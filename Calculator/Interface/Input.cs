@@ -46,6 +46,21 @@ namespace Calculator
                         Print();
                         break;
 
+                    case "hf":
+                        help.Print("functions");
+                        Print();
+                        break;
+
+                    case "hv":
+                        help.Print("variables");
+                        Print();
+                        break;
+
+                    case "hp":
+                        help.Print("priorities");
+                        Print();
+                        break;
+
                     case "full":
                     case "fu":
                         output.Result = library.CurrentVariable.Value.ToString();
