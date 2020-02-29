@@ -7,14 +7,12 @@ namespace Calculator
     {
         /* -------------- Fields -------------- */
         char name;
-        bool removable;
 
 
         /* ------------ Constructor ----------- */
-        public Variable(char name, bool removable = true)
+        public Variable(char name)
         {
             this.name = name;
-            this.removable = removable;
             Comment = "";
             Value = 0;
         }
@@ -24,13 +22,6 @@ namespace Calculator
         public string LastOperation { get; set; }
         public string Comment { get; set; }
         public double Value { get; set; }
-        public bool IsRemovable
-        {
-            get
-            {
-                return removable;
-            }
-        }
         public char Name
         {
             get

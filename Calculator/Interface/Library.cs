@@ -14,7 +14,7 @@ namespace Calculator
         public Library() : base("Variables")
         {
             // default var on startup
-            variables.Add(new Variable('x', false));
+            variables.Add(new Variable('x'));
             variables[0].Comment = "Default var";
             CurrentVariable = variables[0];
         }
@@ -33,12 +33,13 @@ namespace Calculator
             }
         }
 
-        public void SetCurrentVariable(char name)
+        public string SetCurrentVariable(char name)
         {
             Variable existingVar = variables.Find(v => v.Name == name);
             if (existingVar != null)
             {
                 CurrentVariable = existingVar;
+                return CurrentVariable.Value.ToString();
             }
             // create new var
             else
@@ -46,31 +47,23 @@ namespace Calculator
                 Variable newVar = new Variable(name);
                 variables.Add(newVar);
                 CurrentVariable = newVar;
+                return $"New variable '{name}' created.";
             }
         }
 
         public string RemoveAll()
         {
-            Variable x = variables[0];
             int count = variables.Count;
             variables.Clear();
-            variables.Add(x);
-            if (CurrentVariable != variables[0])
-            {
-                variables.Add(CurrentVariable);
-                return $"Deleted {count - 2} variables.";
-            }
-            else
-            {
-                return $"Deleted {count - 1} variables.";
-            }
+            variables.Add(CurrentVariable);
+            return $"Deleted {count - 1} variables.";
         }
 
         public string RemoveVar(char? name = null)
         {
             if (!name.HasValue)
             {
-                if (CurrentVariable.IsRemovable)
+                if (variables.Count > 1)
                 {
                     variables.Remove(CurrentVariable);
                     string msg = $"Variable '{CurrentVariable.Name}' has been removed.";
@@ -87,7 +80,7 @@ namespace Calculator
                 Variable variable = variables.Find(x => x.Name == name.Value);
                 if (variable != null)
                 {
-                    if (variable.IsRemovable)
+                    if (variables.Count > 1)
                     {
                         variables.Remove(variable);
                         if (CurrentVariable == variable)
@@ -103,7 +96,7 @@ namespace Calculator
                 }
                 else
                 {
-                    return $"Couldn't remove variable {name.Value}. It has not been created.";
+                    return $"Couldn't find variable {name.Value}.";
                 }
             }
         }

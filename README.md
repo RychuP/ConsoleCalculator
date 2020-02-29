@@ -3,8 +3,8 @@
 Features:
 - addition, substraction, multiplication, division and exponantiation
 - single letter variables (with optional descriptions of what they hold)
-- constants: pi, dgt (degrees to radians: pi / 180)
-- trigonometric functions: sin, cos, tan (tg), csc, sec, cot (ctg)
+- constants: pi
+- trigonometric functions: sin, cos, tan (tg), csc, sec, cot (ctg), asin, acos, atan
 - grouping expressions in brackets
 - commands (type 'help' to show all available)
 

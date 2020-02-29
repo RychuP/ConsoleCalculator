@@ -5,53 +5,75 @@ namespace Calculator
 {
     class Function : Expression
     {
-        public static readonly Dictionary<string, char> Types = new Dictionary<string, char>()
-        {
-            {"sin", Symbol.Sin},
-            {"cos", Symbol.Cos},
-            {"tan", Symbol.Tan},
-            {"tg", Symbol.Tan},
+        // used in parsing
+        public const char Symbol = 'ƒ';
 
-            {"csc", Symbol.Csc},
-            {"sec", Symbol.Sec},
-            {"cot", Symbol.Cot},
-            {"ctg", Symbol.Cot}
+        // degrees to radians
+        const double exchangeRate = Math.PI / 180;
+
+        // available trigonometric functions
+        public static readonly Dictionary<string, Func<double, double>> Types = 
+            new Dictionary<string, Func<double, double>>()
+        { 
+            // any function names that in the name contain other function names, have to go first (parsing)
+            {"asin", x => Settings.AnglesInRadians ? Math.Asin(x) : Math.Asin(x) / exchangeRate},
+            {"acos", x => Settings.AnglesInRadians ? Math.Acos(x) : Math.Acos(x) / exchangeRate},
+            {"atan", x => Settings.AnglesInRadians ? Math.Atan(x) : Math.Atan(x) / exchangeRate},
+
+            {"csc", x => 1 / Math.Sin(x)},
+            {"sec", x => 1 / Math.Cos(x)},
+            {"cot", x => 1 / Math.Tan(x)},
+            {"ctg", x => 1 / Math.Tan(x)},
+
+            {"sin", x => Math.Sin(x)},
+            {"cos", x => Math.Cos(x)},
+            {"tan", x => Math.Tan(x)},
+            { "tg", x => Math.Tan(x)},
+
+            {"log", x => Math.Log(x)}
         };
 
-        public Function(char functionType, Parser input) : base(input)
+        /*
+            double dtr = Math.PI / 180;
+            double rtd = 180 / Math.PI;
+            double angleInDegrees = 100;
+            double angle = angleInDegrees * dtr;
+            double x = Math.Sin(angle);
+            double angleofx = Math.Asin(x);
+            string name = "sin";
+            Console.WriteLine(
+                $"angle = angleInDegrees\n" +
+                $"angle in radians = {angle}\n\n" +
+                $"{name} of angle = {x}\n\n" +
+                $"a{name} of {name} in radians = {angleofx}\n" +
+                $"a{name} of {name} = {angleofx * rtd}");
+            Console.ReadKey();
+            return;
+        */
+
+        public Function(string name, Parser parser) : base(parser)
         {
-            double angle = Settings.AnglesInRadians ? base.Value : base.Value * (Math.PI / 180);
-
-            switch (functionType)
+            if (Types.ContainsKey(name))
             {
-                case Symbol.Sin:
-                    Value = Math.Sin(angle);
-                    break;
+                double input;
 
-                case Symbol.Cos:
-                    Value = Math.Cos(angle);
-                    break;
+                // most functions work on current value without transformation
+                if (name[0] == 'a' || name[0] == 'l')
+                {
+                    input = base.Value;
+                }
 
-                case Symbol.Tan:
-                    Value = Math.Tan(angle);
-                    break;
+                // change radians to degrees if needed for functions that need angle as input
+                else
+                {
+                    input = Settings.AnglesInRadians ? base.Value : base.Value * exchangeRate;
+                }
 
-
-                case Symbol.Csc:
-                    Value = 1 / Math.Sin(angle);
-                    break;
-
-                case Symbol.Sec:
-                    Value = 1 / Math.Cos(angle);
-                    break;
-
-                case Symbol.Cot:
-                    Value = 1 / Math.Tan(angle);
-                    break;
-
-
-                default:
-                    throw new Exception("Unknown symbol in the function constructor");
+                Value = Types[name](input);
+            }
+            else
+            {
+                throw new Exception("Invalid function Types index");
             }
         }
     }

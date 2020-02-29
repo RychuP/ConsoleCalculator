@@ -75,8 +75,7 @@ namespace Calculator
                         {
                             if (asciiLettersOnly.IsMatch(inputTxt))
                             {
-                                library.SetCurrentVariable(inputTxt[0]);
-                                output.Result = "Variable changed.";
+                                output.Result = library.SetCurrentVariable(inputTxt[0]);
                             }
                             else if (inputTxt[0] == '#')
                             {

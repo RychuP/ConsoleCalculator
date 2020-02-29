@@ -10,13 +10,15 @@ namespace Calculator
         Regex validCharacters = new Regex(@"^[a-zA-Z0-9_()\^\/\+*-. ]+$");
         Regex digitsOnly = new Regex("^[0-9]+$");
         Regex letterOnly = new Regex("^[a-zA-Z]+$");
+        List<string> functionNames = new List<string>();
+        List<string> constantNames = new List<string>();
+        Library library;
         string input;
         string originalInput;
-        char currentChar;
-        int currentIndex = 0;
         // difference between the index in this instance and the original
         int indexAdjustement = 0;
-        Library library;
+        int currentIndex = 0;
+        char currentChar;
 
 
         // Constructors
@@ -24,16 +26,21 @@ namespace Calculator
         {
             originalInput = input;
             input = input.Replace(" ", "");
-            // replace function names with symbols (easier to read by parser)
-            foreach (KeyValuePair<string, char> kvp in Function.Types)
+
+            // replace function names with a symbol and index in Function.Types (easier to read by parser)
+            foreach (string name in Function.Types.Keys)
             {
-                input = input.Replace(kvp.Key, $"{kvp.Value}");
+                functionNames.Add(name);
+                input = input.Replace(name, $"{Function.Symbol}" + (char)(functionNames.Count - 1));
             }
+
             // replace constant names with symbols (easier to read by parser)
-            foreach (KeyValuePair<string, char> kvp in Constant.Predefined)
+            foreach (string name in Constant.Predefined.Keys)
             {
-                input = input.Replace(kvp.Key, $"{kvp.Value}");
+                constantNames.Add(name);
+                input = input.Replace(name, $"{Constant.Symbol}" + (char)(constantNames.Count - 1));
             }
+
             this.library = library;
             this.input = input;
             Reset();
@@ -81,15 +88,13 @@ namespace Calculator
             int openBracketCount = 0;
             bool assemblingDecimal = false;
             bool assemblingFunction = false;
-            // some random char to throw exception if function symbol doesn't get assigned when it should
-            char functionType = Symbol.Error;
+            string functionName = "";
 
             while (currentIndex < input.Length)
             {
                 // when there is no open brackets
                 if (openBracketCount == 0)
                 {
-                    // after the function symbol the only expected char is open bracket
                     if (assemblingFunction)
                     {
                         if (currentChar == '(')
@@ -141,26 +146,20 @@ namespace Calculator
                                 else switch (currentChar)
                                 {
                                     case '(':
-                                            openBracketCount++;
-                                            output.Add(currentChar);
-                                            break;
+                                        openBracketCount++;
+                                        output.Add(currentChar);
+                                        break;
 
-                                    case Symbol.Pi:
+                                    case Constant.Symbol:
                                         IncrementIndex();
-                                        return new Constant(Math.PI);
-
-                                    case Symbol.Dtr:
+                                        string constantName = GetObjNameByIndex(currentChar, constantNames);
                                         IncrementIndex();
-                                        return new Constant(Math.PI / 180);
+                                        return new Constant(constantName);
 
-                                    case Symbol.Sin:
-                                    case Symbol.Cos:
-                                    case Symbol.Tan:
-                                    case Symbol.Csc:
-                                    case Symbol.Sec:
-                                    case Symbol.Cot:
+                                    case Function.Symbol:
+                                        IncrementIndex();
                                         assemblingFunction = true;
-                                        functionType = currentChar;
+                                        functionName = GetObjNameByIndex(currentChar, functionNames);
                                         break;
 
                                     default:
@@ -255,7 +254,7 @@ namespace Calculator
                 {
                     if (openBracketCount == 0)
                     {
-                        return new Function(functionType, output);
+                        return new Function(functionName, output);
                     }
 
                     else
@@ -329,6 +328,20 @@ namespace Calculator
             {
                 // remove all white spaces
                 currentChar = input[0];
+            }
+        }
+
+        string GetObjNameByIndex(char i, List<string> collection)
+        {
+            int index = (int) i;
+
+            if (index < collection.Count)
+            {
+                return collection[index];
+            }
+            else
+            {
+                throw new Exception("Parser engine error. Index larger than collection count.");
             }
         }
     }

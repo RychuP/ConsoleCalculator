@@ -32,7 +32,7 @@ namespace Calculator
                 "",
                 "$Functions:",
                 "  Built in C# math trigonometric functions are not perfectly accurate.",
-                "  Some results are a tiny fraction off."
+                "  Some results are a tiny fraction off (in the region of 1E-17)."
             } }
         };
 

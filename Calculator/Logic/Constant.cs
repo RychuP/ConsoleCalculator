@@ -1,18 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Calculator
 {
     class Constant : Operand
     {
-        public static readonly Dictionary<string, char> Predefined = new Dictionary<string, char>()
+        // used in parsing
+        public const char Symbol = '$';
+
+        // new constant needs entry here, entry in symbol class and implementation in parser
+        public static readonly Dictionary<string, double> Predefined = new Dictionary<string, double>()
         {
-            {"pi", Symbol.Pi},
-            {"dtr", Symbol.Dtr}
+            {"pi", Math.PI}
         };
 
         public Constant(double value) : base()
         {
             Value = value;
+        }
+
+        public Constant(string name) : base()
+        {
+            if (Predefined.ContainsKey(name))
+            {
+                Value = Predefined[name];
+            }
+            else
+            {
+                throw new Exception("Call to new constant with a wrong name of a predefined number");
+            }
         }
     }
 }
