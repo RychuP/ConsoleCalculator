@@ -174,7 +174,7 @@ namespace Calculator
 
         public void MoveVariable()
         {
-            if (variables.Count < 1) return;
+            if (variables.Count <= 1) return;
 
             ConsoleKeyInfo info;
             do

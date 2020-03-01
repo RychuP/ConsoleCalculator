@@ -34,9 +34,12 @@ namespace Calculator
                     case ConsoleKey.D3:
                         AutomaticVariableRecalculation = !AutomaticVariableRecalculation;
                         break;
+
+                    default:
+                        return;
                 }
 
-            } while (info.Key != ConsoleKey.D4 || info.Key != ConsoleKey.Enter);
+            } while (true);
         }
 
         void PrintOptions()
@@ -49,7 +52,6 @@ namespace Calculator
             Console.WriteLine("1. Trigonometric functions take argument in: {0}", angleTypeStatus);
             Console.WriteLine("2. Decimal places rounded in 'Variables' window: {0}", roundingStatus);
             Console.WriteLine("3. Automatic recalculation of connected variables: {0}", recalculationStatus);
-            Console.WriteLine("4. Exit settings");
             Console.WriteLine("\nSelect an option...");
         }
     }
