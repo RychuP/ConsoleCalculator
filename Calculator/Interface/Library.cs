@@ -144,7 +144,7 @@ namespace Calculator
                                     else
                                     {
                                         errorsDuringRecalculation = $"Variable '{x.Name}' couldn't evaluate " +
-                                            "with the current value of '{CurrentVariable.Name}'";
+                                            $"with the current value of '{CurrentVariable.Name}'";
                                     }
                                 }
                             }
