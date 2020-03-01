@@ -30,6 +30,11 @@ namespace Calculator
             {"tan", x => Round(Math.Tan(x))},
             { "tg", x => Round(Math.Tan(x))},
 
+            {"log10", x => Math.Log10(x)},
+            {"log7", x => Math.Log(x, 7)},
+            {"log5", x => Math.Log(x, 5)},
+            {"log3", x => Math.Log(x, 3)},
+            {"log2", x => Math.Log(x, 2)},
             {"log", x => Math.Log(x)}
         };
 

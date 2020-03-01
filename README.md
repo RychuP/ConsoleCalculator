@@ -5,6 +5,7 @@ Features:
 - single letter variables (with optional descriptions of what they hold)
 - constants: pi
 - trigonometric functions: sin, cos, tan (tg), csc, sec, cot (ctg), asin, acos, atan
+- logarythmic functions: log, log2, log3, log5, log7, log10
 - grouping expressions in brackets
 - commands (type 'help' to show all available)
 
