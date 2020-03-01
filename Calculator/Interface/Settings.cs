@@ -6,6 +6,7 @@ namespace Calculator
     {
         public static bool AnglesInRadians = false;
         public static bool DisplayDecimalDigitsRounded = false;
+        public static bool AutomaticVariableRecalculation = false;
         public static int DecimalPlacesToShow = 2;
 
         public Settings() : base("Settings")
@@ -17,11 +18,13 @@ namespace Calculator
         {
             Console.Clear();
             PrintHeader();
-            string angleType = AnglesInRadians ? "RADIANS" : "DEGREES";
-            string rounding = DisplayDecimalDigitsRounded ? "ON" : "OFF";
-            Console.WriteLine("1. Trigonometric functions take argument in: {0}", angleType);
-            Console.WriteLine("2. Decimal places rounded in 'Variables' window: {0}", rounding);
-            Console.WriteLine("3. Exit settings");
+            string angleTypeStatus = AnglesInRadians ? "RADIANS" : "DEGREES";
+            string roundingStatus = DisplayDecimalDigitsRounded ? "ON" : "OFF";
+            string recalculationStatus = AutomaticVariableRecalculation ? "ON" : "OFF";
+            Console.WriteLine("1. Trigonometric functions take argument in: {0}", angleTypeStatus);
+            Console.WriteLine("2. Decimal places rounded in 'Variables' window: {0}", roundingStatus);
+            Console.WriteLine("3. Automatic recalculation of connected variables: {0}", recalculationStatus);
+            Console.WriteLine("4. Exit settings");
             Console.WriteLine("\nSelect an option...");
             ConsoleKeyInfo info = Console.ReadKey();
             switch (info.Key)
@@ -35,6 +38,10 @@ namespace Calculator
                     break;
 
                 case ConsoleKey.D3:
+                    AutomaticVariableRecalculation = !AutomaticVariableRecalculation;
+                    break;
+
+                case ConsoleKey.D4:
                     return;
             }
             Print();

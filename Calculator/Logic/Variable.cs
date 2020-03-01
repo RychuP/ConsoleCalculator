@@ -5,14 +5,10 @@ namespace Calculator
     // single letter variable that holds results of valid user inputs
     class Variable
     {
-        /* -------------- Fields -------------- */
-        char name;
-
-
         /* ------------ Constructor ----------- */
         public Variable(char name)
         {
-            this.name = name;
+            Name = name;
             Comment = "";
             Value = 0;
         }
@@ -22,13 +18,7 @@ namespace Calculator
         public string LastOperation { get; set; }
         public string Comment { get; set; }
         public double Value { get; set; }
-        public char Name
-        {
-            get
-            {
-                return name;
-            }
-        }
+        public char Name { get; private set; }
 
 
         /* ------------- Methods -------------- */
@@ -68,7 +58,7 @@ namespace Calculator
 
             // display value
             string equalitySign = approximation ? "≈" : "=";
-            Console.WriteLine("{0} {1} {2} [{3}]\n", name, equalitySign, valueToDisplay, LastOperation);
+            Console.WriteLine("{0} {1} {2} [{3}]\n", Name, equalitySign, valueToDisplay, LastOperation);
         }
     }
 }

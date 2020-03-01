@@ -124,6 +124,14 @@ namespace Calculator
                     {
                         CurrentVariable.Value = result;
                         CurrentVariable.LastOperation = inputTxt;
+
+                        /* for the autorecalculation of variables
+                        foreach (Variable x in variables)
+                        {
+                            if ()
+                        }
+                        */
+
                         return $"{result}";
                     }
                 }

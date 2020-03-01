@@ -4,7 +4,7 @@ namespace Calculator
 {
     class Program
     {
-        public static readonly string Title = $"Rychu's Console Calculator v0.53";
+        public static readonly string Title = $"Rychu's Console Calculator v0.59";
         static void Main(string[] args)
         {
             Console.WindowHeight = 30;

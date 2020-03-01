@@ -1,4 +1,4 @@
-# Console Calculator v0.53
+# Console Calculator v0.59
 
 Features:
 - addition, substraction, multiplication, division and exponantiation
