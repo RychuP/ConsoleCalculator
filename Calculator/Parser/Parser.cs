@@ -34,7 +34,7 @@ namespace Calculator
                 input = input.Replace(name, $"{Function.Symbol}" + (char)(functionNames.Count - 1));
             }
 
-            // replace constant names with symbols (easier to read by parser)
+            // replace constant names with a symbol and index in Constant.Predefined (easier to read by parser)
             foreach (string name in Constant.Predefined.Keys)
             {
                 constantNames.Add(name);
@@ -79,7 +79,6 @@ namespace Calculator
                 return digitsOnly.IsMatch(input);
             }
         }
-
 
         // Methods
         public Object GetNextPart()
@@ -130,7 +129,7 @@ namespace Calculator
                                 else if (letterOnly.IsMatch($"{currentChar}"))
                                 {
                                     Variable variable = library.Find(currentChar);
-                                    bool nextCharNotLetter = currentIndex + 1 == input.Length || !Char.IsLetter(input[currentIndex + 1]);
+                                    bool nextCharNotLetter = currentIndex + 1 == input.Length || !letterOnly.IsMatch($"{input[currentIndex + 1]}");
                                     if (variable != null && nextCharNotLetter)
                                     {
                                         IncrementIndex();

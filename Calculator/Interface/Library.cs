@@ -124,15 +124,33 @@ namespace Calculator
                     {
                         CurrentVariable.Value = result;
                         CurrentVariable.LastOperation = inputTxt;
+                        string errorsDuringRecalculation = "";
 
-                        /* for the autorecalculation of variables
-                        foreach (Variable x in variables)
+                        //autorecalculation of variables
+                        if (Settings.AutomaticVariableRecalculation)
                         {
-                            if ()
+                            foreach (Variable x in variables)
+                            {
+                                if (x != CurrentVariable)
+                                {
+                                    parser = new Parser(x.LastOperation, this);
+                                    expression = new Expression(parser);
+                                    result = expression.Value;
+                                    if (!Double.IsInfinity(result) && !Double.IsNaN(result))
+                                    {
+                                        x.Value = result;
+                                    }
+                                    else
+                                    {
+                                        errorsDuringRecalculation = $"Variable '{x.Name}' couldn't evaluate " +
+                                            "with the current value of '{CurrentVariable.Name}'";
+                                    }
+                                }
+                            }
                         }
-                        */
 
-                        return $"{result}";
+                        return String.IsNullOrEmpty(errorsDuringRecalculation) ? 
+                            $"{result}" : errorsDuringRecalculation;
                     }
                 }
                 else
