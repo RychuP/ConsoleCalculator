@@ -16,6 +16,31 @@ namespace Calculator
 
         public void Print()
         {
+            ConsoleKeyInfo info;
+            do
+            {
+                PrintOptions();
+                info = Console.ReadKey();
+                switch (info.Key)
+                {
+                    case ConsoleKey.D1:
+                        AnglesInRadians = !AnglesInRadians;
+                        break;
+
+                    case ConsoleKey.D2:
+                        DisplayDecimalDigitsRounded = !DisplayDecimalDigitsRounded;
+                        break;
+
+                    case ConsoleKey.D3:
+                        AutomaticVariableRecalculation = !AutomaticVariableRecalculation;
+                        break;
+                }
+
+            } while (info.Key != ConsoleKey.D4);
+        }
+
+        void PrintOptions()
+        {
             Console.Clear();
             PrintHeader();
             string angleTypeStatus = AnglesInRadians ? "RADIANS" : "DEGREES";
@@ -26,25 +51,6 @@ namespace Calculator
             Console.WriteLine("3. Automatic recalculation of connected variables: {0}", recalculationStatus);
             Console.WriteLine("4. Exit settings");
             Console.WriteLine("\nSelect an option...");
-            ConsoleKeyInfo info = Console.ReadKey();
-            switch (info.Key)
-            {
-                case ConsoleKey.D1:
-                    AnglesInRadians = !AnglesInRadians;
-                    break;
-
-                case ConsoleKey.D2:
-                    DisplayDecimalDigitsRounded = !DisplayDecimalDigitsRounded;
-                    break;
-
-                case ConsoleKey.D3:
-                    AutomaticVariableRecalculation = !AutomaticVariableRecalculation;
-                    break;
-
-                case ConsoleKey.D4:
-                    return;
-            }
-            Print();
         }
     }
 }

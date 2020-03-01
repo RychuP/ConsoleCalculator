@@ -84,6 +84,11 @@ namespace Calculator
                         settings.Print();
                         break;
 
+                    case "mo":
+                        library.MoveVariable();
+                        Print();
+                        break;
+
                     default:
                         // variable change or clear comment
                         if (inputTxt.Length == 1 && !Char.IsDigit(inputTxt[0]))

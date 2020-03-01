@@ -45,6 +45,7 @@ namespace Calculator
             else
             {
                 Variable newVar = new Variable(name);
+                newVar.LastOperation = "0";
                 variables.Add(newVar);
                 CurrentVariable = newVar;
                 return $"New variable '{name}' created.";
@@ -167,6 +168,40 @@ namespace Calculator
         public Variable Find(char name)
         {
             return variables.Find(x => x.Name == name);
+        }
+
+        public void MoveVariable()
+        {
+            if (variables.Count < 1) return;
+
+            ConsoleKeyInfo info;
+            do
+            {
+                Console.Clear();
+                Print();
+                Console.WriteLine("\nPress UP or DOWN to move variable, ENTER to save position...");
+                info = Console.ReadKey();
+                int index = variables.IndexOf(CurrentVariable);
+                switch (info.Key)
+                {
+                    case ConsoleKey.UpArrow:
+                        if (index > 0)
+                        {
+                            variables.Remove(CurrentVariable);
+                            variables.Insert(index - 1, CurrentVariable);
+                        }
+                        break;
+
+                    case ConsoleKey.DownArrow:
+                        if (index < variables.Count - 1)
+                        {
+                            variables.Remove(CurrentVariable);
+                            variables.Insert(index + 1, CurrentVariable);
+                        }
+                        break;
+                }
+
+            } while (info.Key != ConsoleKey.Enter);
         }
     }
 }
