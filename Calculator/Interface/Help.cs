@@ -29,6 +29,7 @@ namespace Calculator
                 "- '# <description>' add comment to current variable (no description: remove comment)",
                 "- 'fu' full precision (shows current variable with all fractional digits)",
                 "- 'mo' move current variable up and down in the list",
+                "",
                 "- 'se' settings",
                 "- 'ex' exit application"
             } },

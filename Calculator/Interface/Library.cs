@@ -147,6 +147,8 @@ namespace Calculator
                                             $"with the current value of '{CurrentVariable.Name}'";
                                     }
                                 }
+
+                                result = CurrentVariable.Value;
                             }
                         }
 

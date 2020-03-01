@@ -36,7 +36,7 @@ namespace Calculator
                         break;
                 }
 
-            } while (info.Key != ConsoleKey.D4);
+            } while (info.Key != ConsoleKey.D4 || info.Key != ConsoleKey.Enter);
         }
 
         void PrintOptions()
