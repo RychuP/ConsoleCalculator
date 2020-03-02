@@ -172,16 +172,17 @@ namespace Calculator
             return variables.Find(x => x.Name == name);
         }
 
-        public void MoveVariable()
+        public string MoveVariable()
         {
-            if (variables.Count <= 1) return;
+            if (variables.Count <= 1) return "One variable can't move.";
 
+            int originalIndex = variables.IndexOf(CurrentVariable);
             ConsoleKeyInfo info;
             do
             {
                 Console.Clear();
                 Print();
-                Console.WriteLine("\nPress UP or DOWN to move variable, ENTER to save position...");
+                Console.WriteLine($"\nPress UP or DOWN to move variable '{CurrentVariable.Name}'...");
                 info = Console.ReadKey();
                 int index = variables.IndexOf(CurrentVariable);
                 switch (info.Key)
@@ -201,9 +202,17 @@ namespace Calculator
                             variables.Insert(index + 1, CurrentVariable);
                         }
                         break;
+
+                    default:
+                        int newIndex = variables.IndexOf(CurrentVariable);
+                        int rowCount = (originalIndex > newIndex) ? originalIndex - newIndex : newIndex - originalIndex;
+                        string rows = rowCount == 1 ? "row" : "rows";
+                        string result = (rowCount == 0) ? "has not been moved." :
+                            (originalIndex > newIndex) ? $"has been moved {rowCount} {rows} UP." : $"has been moved {rowCount} {rows} DOWN.";
+                        return $"Variable '{CurrentVariable.Name}' {result}";
                 }
 
-            } while (info.Key != ConsoleKey.Enter);
+            } while (true);
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace Calculator
 {
+    // there are many ways to improve this parser, but it works, so... might as well leave it as it is ;)
     class Parser
     {
         // Fields

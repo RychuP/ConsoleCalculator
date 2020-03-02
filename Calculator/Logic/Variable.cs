@@ -43,7 +43,7 @@ namespace Calculator
                 if (Settings.DisplayDecimalDigitsRounded && decimalDigitCount > 2)
                 {
                     string format = "{0:0." + new String('0', Settings.DecimalPlacesToShow) + "}";
-                    valueToDisplay = String.Format(format, Value) + "..";
+                    valueToDisplay = String.Format(format, Value); // + "..";
                     approximation = true;
                 }
                 else

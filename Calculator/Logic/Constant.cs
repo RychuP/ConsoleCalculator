@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Calculator
 {
+    // holds raw values from the input string (namely ints and decimals)
     class Constant : Operand
     {
         // used in parsing

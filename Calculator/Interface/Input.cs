@@ -85,7 +85,7 @@ namespace Calculator
                         break;
 
                     case "mo":
-                        library.MoveVariable();
+                        output.Result = library.MoveVariable();
                         Print();
                         break;
 
