@@ -14,9 +14,6 @@ Calculator icon by [Papirus Development Team](https://github.com/PapirusDevelopm
 
 The MIT License (MIT)
 
-Copyright (c) 2020 Ryszard Pyka
-
-
 ## Sample Output (Screenshot)
 
 ![screenshot](/screenshot.png)
