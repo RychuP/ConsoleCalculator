@@ -12,8 +12,6 @@ Features:
 
 Calculator icon by [Papirus Development Team](https://github.com/PapirusDevelopmentTeam).
 
-The MIT License (MIT)
-
 ## Sample Output (Screenshot)
 
 ![screenshot](/screenshot.png)
